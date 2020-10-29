@@ -43,7 +43,7 @@ function App() {
           <Route path="/newteacher" exact component={NewTeacher} />
           <Route path="/newteacher/details" exact component={TeacherDetails} />
           <Route path="/about" exact component={About} />
-          <Route path="/" component={NotFound} />                  
+          <Route path="*" component={NotFound} />                  
         </Switch>
       </Router>
     </div>

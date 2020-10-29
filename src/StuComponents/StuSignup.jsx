@@ -66,7 +66,7 @@ function StuSignup() {
       .get()
       .then(function (doc) {
         if (doc.exists) {
-          getCurrentList();
+          // getCurrentList();
           createUser();
         } else {
           M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })
@@ -78,23 +78,21 @@ function StuSignup() {
   };
 
   const createUser = () => {
-    // checkRollNo();
-    console.log(duplicate);
-    if (duplicate) {
-      M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
-    } else {
-      const auth = firebase.auth();
-      auth
-        .createUserWithEmailAndPassword(email, pass)
-        .then(() => {
-          M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
-          createDoc();
-          addToCRList();
-        })
-        .catch((err) => {
-          M.toast({ html: err.message, classes: "toast error-toast" })
-        });
-    }
+    const auth = firebase.auth();
+    auth
+      .createUserWithEmailAndPassword(email, pass)
+      .then(() => {
+        M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
+        if (duplicate) {
+          M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
+          return 
+        }
+        createDoc();
+        addToCRList();        
+      })
+      .catch((err) => {
+        M.toast({ html: err.message, classes: "toast error-toast" })
+      });
   };
 
   const createDoc = () => {

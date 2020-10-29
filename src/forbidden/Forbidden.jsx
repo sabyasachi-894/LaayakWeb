@@ -9,7 +9,7 @@ class Forbidden extends Component {
             .auth()
             .signOut()
             .then(() => {
-                window.location.pathname.concat("/login");
+                window.location.reload();
             })
             .catch((err) => {
                 alert(err.message);

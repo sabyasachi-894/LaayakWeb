@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
 import Modal from 'react-bootstrap/Modal';
+import M from 'materialize-css';
 
 class AddLecture extends Component {
   isMount = false;
@@ -45,19 +46,19 @@ class AddLecture extends Component {
       <div>
         <button className="btn-info btn-lg mb-4" onClick={this.showModal}>
           Add Lecture +
-        </button>        
-        <Modal        
-        show={this.state.show} 
-        onHide={this.hideModal}
-        dialogClassName="modal-dialog-scrollable modal-lg"
+        </button>
+        <Modal
+          show={this.state.show}
+          onHide={this.hideModal}
+          dialogClassName="modal-dialog-scrollable modal-lg"
         >
-        <Modal.Header closeButton>
-          <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        {this.getForm()}
-        </Modal.Body>        
-      </Modal>
+          <Modal.Header closeButton>
+            <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.getForm()}
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
@@ -65,7 +66,7 @@ class AddLecture extends Component {
   getForm = () => {
     return (
       <div>
-        <form className="m-2" onSubmit={this.callAddLecture}>          
+        <form className="m-2" onSubmit={this.callAddLecture}>
           <div className="col-sm-7" style={{ margin: "auto" }}>
             <label>Branch: </label>
             <select
@@ -76,10 +77,10 @@ class AddLecture extends Component {
             >
               <option className="add-lec-opns" value="">
                 --Choose Branch---
-              </option>              
+              </option>
               {this.props.classesTeaching.map((classTeaching) => {
                 return (
-                  <option className="add-lec-opns" key={classTeaching.details.classId+classTeaching.details.subject} value={classTeaching.details.branch}>
+                  <option className="add-lec-opns" key={classTeaching.details.classId + classTeaching.details.subject} value={classTeaching.details.branch}>
                     {classTeaching.details.branch}
                   </option>
                 );
@@ -119,7 +120,7 @@ class AddLecture extends Component {
               </option>
               {this.state.classId && this.props.classesTeaching.find((classTeaching) => (classTeaching.details.classId === this.state.classId)).subjects.map((sub) => {
                 return (
-                  <option className="add-lec-opns" key={sub.code} value={sub.code}>
+                  <option className="add-lec-opns" key={sub.code + sub.name} value={sub.code}>
                     {sub.name}
                   </option>
                 );
@@ -129,7 +130,7 @@ class AddLecture extends Component {
           <div className="col-md-7 mb-3" style={{ margin: "auto" }}>
             <label>Link:</label>
             <input
-              type="text"
+              type="url"
               className="form-control"
               id="link"
               name="link"
@@ -190,14 +191,14 @@ class AddLecture extends Component {
           </div>
           <button className="btn btn-success" type="submit">
             Add Lecture
-          </button>          
+          </button>
         </form>
       </div>
     );
   };
 
   handleSubChange = (e) => {
-    const code = e.target.value;    
+    const code = e.target.value;
     const subjects = this.props.classesTeaching.find((classTeaching) => classTeaching.details.classId === this.state.classId).subjects;
     const name = subjects.find((sub) => sub.code === code).name;
     this.setState({
@@ -208,34 +209,34 @@ class AddLecture extends Component {
 
   handleSemChange = (e) => {
     const val = e.target.value;
-    let reqClass = {};    
+    let reqClass = {};
     this.props.classesTeaching.forEach((classTeaching) => {
-      if(classTeaching.details.classId === val){
+      if (classTeaching.details.classId === val) {
         reqClass = classTeaching.details;
       }
-    })    
+    })
     this.setState({
       semester: reqClass.sem,
       classId: reqClass.classId
-    })   
+    })
 
   }
 
   handleChange = (event) => {
     let nam = event.target.name;
-    let val = event.target.value;    
+    let val = event.target.value;
     this.setState({ [nam]: val });
   };
 
   callAddLecture = (e) => {
-    e.preventDefault(); // preventing reload
+    e.preventDefault(); // preventing reload    
     const start = Date.parse(this.state.startTime),
       end = Date.parse(this.state.endTime);
 
     const startDate = new Date(start),
       endDate = new Date(end);
 
-    const newLecture = {      
+    const newLecture = {
       subjectName: this.state.subjectName,
       subjectCode: this.state.subjectCode,
       classId: this.state.classId,
@@ -246,7 +247,7 @@ class AddLecture extends Component {
       group: this.state.group,
     };
     this.setState({ show: false });
-    this.props.addLecture(newLecture);
+    // this.props.addLecture(newLecture);
     this.setState({
       link: "",
       subject: "",
@@ -256,7 +257,7 @@ class AddLecture extends Component {
       text: "",
       group: "",
     });
-  };
-}
+  }
+};
 
 export default AddLecture;

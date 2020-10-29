@@ -43,23 +43,24 @@ class MainPage extends Component {
   componentDidMount() {
     // only data fetch
     this.isMount = true;
-      this.teachRef.onSnapshot((teacher) => {
+    this.teachRef.onSnapshot((teacher) => {
+      if (this.isMount) {
+        this.setState({
+          details: teacher.data().details,
+          loading: false
+        });
+      }
+    })
+    this.teachClassRef.onSnapshot((querySnapshot) => {
+      querySnapshot.docs.forEach((classTeaching) => {
+        let { classesTeaching } = this.state;
+        classesTeaching.push(classTeaching.data());
         if (this.isMount) {
-          this.setState({
-            details: teacher.data().details,
-            loading: false
-          });
+          this.setState({ classesTeaching })
         }
-      })
-      this.teachClassRef.onSnapshot((querySnapshot) => {
-        querySnapshot.docs.forEach((classTeaching) => {
-          let { classesTeaching } = this.state;
-          classesTeaching.push(classTeaching.data());
-          if (this.isMount) {
-            this.setState({ classesTeaching })
-          }
-          this.claRef.doc(classTeaching.id).collection("lectures").doc("lecturesToday").onSnapshot((snap) => {
-            let { lecturesToday } = this.state;
+        this.claRef.doc(classTeaching.id).collection("lectures").doc("lecturesToday").onSnapshot((snap) => {
+          let { lecturesToday } = this.state;
+          if (snap.data()) {
             snap.data().lectures.forEach((l) => {
               classTeaching.data().subjects.forEach((sub) => {
                 if (l.subjectCode === sub.code) {
@@ -67,12 +68,13 @@ class MainPage extends Component {
                 }
               })
             })
-            if (this.isMount) {
-              this.setState({ lecturesToday })
-            }
-          })
+          }
+          if (this.isMount) {
+            this.setState({ lecturesToday })
+          }
         })
       })
+    })
   }
 
   componentWillMount() {

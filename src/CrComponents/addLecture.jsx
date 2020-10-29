@@ -44,18 +44,19 @@ class AddLecture extends Component {
         <button className="btn-info btn-lg mb-4" onClick={this.showModal}>
           Add Lecture +
         </button>
-        <Modal        
-        show={this.state.show} 
-        onHide={this.hideModal}
-        dialogClassName="modal-dialog-scrollable modal-lg"
+        <Modal
+          animation={false}
+          show={this.state.show}
+          onHide={this.hideModal}
+          dialogClassName="modal-dialog-scrollable modal-lg"
         >
-        <Modal.Header closeButton>
-          <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        {this.getForm()}
-        </Modal.Body>        
-      </Modal>
+          <Modal.Header closeButton>
+            <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.getForm()}
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
@@ -87,7 +88,7 @@ class AddLecture extends Component {
           <div className="col-md-7 mb-3" style={{ margin: "auto" }}>
             <label>Link:</label>
             <input
-              type="text"
+              type="url"
               className="form-control"
               id="link"
               name="link"
@@ -105,7 +106,7 @@ class AddLecture extends Component {
                   className="form-control"
                   type="datetime-local"
                   name="startTime"
-                  min={Date.now()}
+                  min={ new Date().toJSON().split(':')[0]+":"+new Date().toJSON().split(':')[1]}
                   id="startTime"
                   onChange={this.handleChange}
                   required
@@ -117,7 +118,7 @@ class AddLecture extends Component {
                   className="form-control"
                   type="datetime-local"
                   name="endTime"
-                  min={Date.now()}
+                  min={new Date().toJSON().split(':')[0]+":"+new Date().toJSON().split(':')[1]}
                   id="endTime"
                   onChange={this.handleChange}
                   required
@@ -173,6 +174,7 @@ class AddLecture extends Component {
   };
 
   handleChange = (event) => {
+    console.log(event.target.min);
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
@@ -180,6 +182,7 @@ class AddLecture extends Component {
 
   callAddLecture = (e) => {
     e.preventDefault(); // preventing reload
+    console.log("A", this.state.link);
     const start = Date.parse(this.state.startTime),
       end = Date.parse(this.state.endTime);
 
@@ -208,7 +211,7 @@ class AddLecture extends Component {
       text: "",
       group: "",
     });
-  };
-}
+  }
+};
 
 export default AddLecture;

@@ -10,7 +10,7 @@ class Class extends Component {
           <div className="ann-preview">    
             <ul>
               {this.props.class.subjects.map((sub) => (
-                <h4 key={sub.code}><li>{sub.name}</li></h4>
+                <h4 key={sub.code + sub.name}><li>{sub.name}</li></h4>
               ))}
             </ul>    
           </div>
