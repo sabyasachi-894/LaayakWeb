@@ -7,6 +7,7 @@ import Loader from "../Loader/Loader";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
 import DarkToggle from "../DarkToggle/DarkToggle"
+import M from "materialize-css";
 
 // reference to firestore
 
@@ -31,11 +32,11 @@ class MainPage extends Component {
       .auth()
       .signOut()
       .then(() => {
-        alert("signed out");
+        M.toast({html: "Signed Out", classes: "toast success-toast"})
         window.location.reload();
       })
       .catch((err) => {
-        alert(err.message);
+        M.toast({html: err.message, classes: "toast error-toast"})
       });
   };
 

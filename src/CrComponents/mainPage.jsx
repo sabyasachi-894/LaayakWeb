@@ -13,6 +13,7 @@ import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import M from "materialize-css";
 
 // reference to firestore
 
@@ -41,11 +42,11 @@ class MainPage extends Component {
       .auth()
       .signOut()
       .then(() => {
-        alert("signed out");
+        M.toast({html: "Logged Out", classes: "toast success-toast"})
         window.location.reload();
       })
       .catch((err) => {
-        alert(err.message);
+        M.toast({html: err.message, classes: "toast error-toast"})
       });
   };
 
@@ -91,7 +92,7 @@ class MainPage extends Component {
     el.select();
     document.execCommand("copy");
     document.body.removeChild(el);
-    alert("Code copied!");
+    M.toast({html: "Class Code Copied", classes: "toast success-toast"})
   };
 
   render() {

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
 import Modal from 'react-bootstrap/Modal';
-import M from 'materialize-css';
 
 class AddLecture extends Component {
   isMount = false;
@@ -247,7 +246,7 @@ class AddLecture extends Component {
       group: this.state.group,
     };
     this.setState({ show: false });
-    // this.props.addLecture(newLecture);
+    this.props.addLecture(newLecture);
     this.setState({
       link: "",
       subject: "",

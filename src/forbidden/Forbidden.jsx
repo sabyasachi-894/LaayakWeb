@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import M from "materialize-css";
 import firebase from "../firebase";
 import "./forbidden.css"
 
@@ -12,7 +13,7 @@ class Forbidden extends Component {
                 window.location.reload();
             })
             .catch((err) => {
-                alert(err.message);
+                M.toast({ html: err.message, classes: "toast error-toast" })
             });
     };
     render() {

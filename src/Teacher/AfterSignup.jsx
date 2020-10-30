@@ -102,7 +102,7 @@ class AfterSignup extends Component {
             <div className="main-container">
                 <div className="container-login mx-auto">
                     <div className="con-login">
-                        <h1>Sign Up</h1>
+                        <h1>Additional Details</h1>
                         <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
                             <div className="con-inputs mt-4">
                                 <div className="con-input">

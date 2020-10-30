@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
 import { Link, Redirect } from "react-router-dom";
+import M from "materialize-css";
 
 const auth = firebase.auth(),
   db = firebase.firestore();
@@ -55,11 +56,11 @@ class NewCr extends Component {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          alert("successfully signed up!");
+          M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
           this.setState({ authStatus: true });
         })
         .catch((err) => {
-          alert(err.message);
+          M.toast({ html: err.message, classes: "toast error-toast" })
         });
     }
   };

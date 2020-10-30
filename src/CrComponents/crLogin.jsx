@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
+import M from 'materialize-css';
 
 let db = firebase.firestore();
 
@@ -27,21 +28,16 @@ class CrLogin extends Component {
       if (doc.data().listOfCRs[email]) {
         firebase.auth().signInWithEmailAndPassword(email, pass)
           .then(() => {
-            alert("logged in successfully");
+            M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
             window.location.pathname = "/cr"
           })
           .catch((err) => {
             if (err.message === "The password is invalid or the user does not have a password.") {
-              // alert("wrong")
-              document.getElementById("password").classList.add("wrong-pass");
-              setTimeout(() => {
-                document.getElementById("password").classList.remove("wrong-pass");
-              }, 3000)
+              M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
             }
-            // alert(err.message);
           });
       } else {
-        alert("You are not a CR")
+        M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
       }
     })
   };

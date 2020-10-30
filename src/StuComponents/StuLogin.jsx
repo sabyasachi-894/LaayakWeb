@@ -11,7 +11,7 @@ class StuLogin extends Component {
         password: ""
     }
 
-    componentDidMount() {        
+    componentDidMount() {
         this.isMount = true;
     }
 
@@ -24,20 +24,22 @@ class StuLogin extends Component {
         this.db.collection("students").doc(this.state.email).get().then((doc) => {
             if (doc.exists) {
                 firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then((user) => {
-                    M.toast({html: "Signed In Successfully", classes: "toast success-toast"})
-                    window.location.pathname = "/student"
-                })
-                .catch((err) => {
-                    M.toast({html: err.message, classes: "toast error-toast"})
-                });
+                    .then((user) => {
+                        M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+                        window.location.pathname = "/student"
+                    })
+                    .catch((err) => {
+                        if (err.message === "The password is invalid or the user does not have a password.") {
+                            M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+                        }
+                    });
             } else {
-                M.toast({html: "You are not a student", classes: "toast error-toast"})
+                M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
             }
         })
     };
 
-    handleChange = (e) => {        
+    handleChange = (e) => {
         const name = e.target.name,
             value = e.target.value;
         if (this.isMount) {

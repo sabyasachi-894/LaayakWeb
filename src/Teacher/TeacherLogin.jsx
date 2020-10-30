@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import M from "materialize-css"
 import firebase from "../firebase";
 
 let db = firebase.firestore();
@@ -26,14 +27,16 @@ class TeacherLogin extends Component {
       if (doc.data()) {
         firebase.auth().signInWithEmailAndPassword(email, pass)
           .then(() => {
-            alert("logged in successfully");
+            M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
             window.location.pathname = "/teacher"
           })
           .catch((err) => {
-            alert(err.message);
+            if (err.message === "The password is invalid or the user does not have a password.") {
+              M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+            }
           });
       } else {
-        alert("You are not a Teacher")
+        M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
       }
     })
   };

@@ -1,12 +1,11 @@
 import React from "react";
 import firebase from "../firebase";
+import M from "materialize-css";
 
 const db = firebase.firestore();
 
 function PrintStu({ student, style, stuList, code }) {
-  const handleKick = () => {
-    alert("roll num: " + student.rollNo);
-
+  const handleKick = () => {  
     // deleting from class list
     const newList = stuList.filter((stu) => stu.rollNo !== student.rollNo);
     const docRef1 = db
@@ -17,9 +16,9 @@ function PrintStu({ student, style, stuList, code }) {
     docRef1
       .update({ studentsList: newList })
       .then(() => {
-        alert("successfully kicked");
+        M.toast({ html: "Kicked Successfully", classes: "toast success-toast" })
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => M.toast({ html: err.message, classes: "toast error-toast" }));
 
     // deleting document created
     // const docRef2 = db.collection("students").doc(student.email);

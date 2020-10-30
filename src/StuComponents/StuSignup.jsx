@@ -23,6 +23,7 @@ function StuSignup() {
         }
       });
     }
+  // eslint-disable-next-line
   }, [code]);
 
   const obj = {
@@ -66,7 +67,6 @@ function StuSignup() {
       .get()
       .then(function (doc) {
         if (doc.exists) {
-          // getCurrentList();
           createUser();
         } else {
           M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })

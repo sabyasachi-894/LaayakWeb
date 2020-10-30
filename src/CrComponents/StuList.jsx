@@ -19,8 +19,6 @@ function StuList({ code }) {
     docRef.onSnapshot((snap) => {
       if (snap.data()) setStu([...snap.data().studentsList]);
     });
-
-    console.log(stu);
   });
 
   const getStuList = () => {
