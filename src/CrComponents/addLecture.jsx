@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
 import Modal from "react-bootstrap/Modal";
+import M from "materialize-css";
 
 class AddLecture extends Component {
   isMount = false;
@@ -194,7 +195,6 @@ class AddLecture extends Component {
 
   callAddLecture = (e) => {
     e.preventDefault(); // preventing reload
-    console.log("A", this.state.link);
     const start = Date.parse(this.state.startTime),
       end = Date.parse(this.state.endTime);
 
@@ -203,8 +203,8 @@ class AddLecture extends Component {
 
     const presentCheck = Date.now() - 60000;
 
-    if (start < presentCheck || end < presentCheck) {
-      alert("Entered class timings can not be in past");
+    if (start < presentCheck || end <= start) {
+      M.toast({ html: "Enter Valid Class Timings", classes: "toast error-toast" })
       return;
     }
 
