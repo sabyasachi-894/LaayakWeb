@@ -21,19 +21,24 @@ class StuLogin extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        const classList = e.target.classList;
+        classList.add("loading");
         this.db.collection("students").doc(this.state.email).get().then((doc) => {
             if (doc.exists) {
                 firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
                     .then((user) => {
+                        classList.remove("loading");
                         M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
                         window.location.pathname = "/student"
                     })
                     .catch((err) => {
                         if (err.message === "The password is invalid or the user does not have a password.") {
+                            classList.remove("loading");
                             M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
                         }
                     });
             } else {
+                classList.remove("loading");
                 M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
             }
         })
@@ -55,7 +60,7 @@ class StuLogin extends Component {
                 <div className="container-login mx-auto">
                     <div className="con-login">
                         <h1>Login</h1>
-                        <form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
+                        <form style={{ width: "100%" }}>
                             <div className="con-inputs mt-4">
                                 <div className="con-input">
                                     <label htmlFor="email">Email</label>
@@ -85,7 +90,7 @@ class StuLogin extends Component {
                                     New here? <Link to="/student/signup">Sign Up</Link>
                                 </div>
                                 <footer>
-                                    <button type="submit" className="btn-login">
+                                    <button onClick={this.handleSubmit} type="submit" className="btn-login">
                                         Log In
                                 </button>
                                 </footer>

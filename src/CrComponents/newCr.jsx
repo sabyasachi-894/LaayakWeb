@@ -51,15 +51,19 @@ class NewCr extends Component {
 
   handleSignUp = (e) => {
     e.preventDefault();
+    const classList = e.target.classList;
+    classList.add("loading");
     const { email, password } = this.state;
     if (!this.state.authStatus) {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
+          classList.remove("loading");
           M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
           this.setState({ authStatus: true });
         })
         .catch((err) => {
+          classList.remove("loading");
           M.toast({ html: err.message, classes: "toast error-toast" })
         });
     }
@@ -89,7 +93,7 @@ class NewCr extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Sign Up</h1>
-            <form onSubmit={this.handleSignUp} style={{ width: "100%" }}>
+            <form style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
                   <label htmlFor="email">Email</label>
@@ -120,7 +124,7 @@ class NewCr extends Component {
                 </div>
               </div>
               <footer>
-                <button type="submit" className="btn-login">
+                <button onClick={this.handleSignUp} type="submit" className="btn-login">
                   Register
                 </button>
               </footer>

@@ -20,8 +20,10 @@ class CrLogin extends Component {
   };
 
 
-  handleLogin = (e) => {
-    e.preventDefault();
+  handleLogin = (event) => {
+    event.preventDefault();
+    const classList = event.target.classList;
+    classList.add("loading");
     const email = this.state.email,
       pass = this.state.password;
     db.collection("students").doc("listOfCRs").get().then((doc) => {
@@ -29,14 +31,17 @@ class CrLogin extends Component {
         firebase.auth().signInWithEmailAndPassword(email, pass)
           .then(() => {
             M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+            classList.remove("loading");
             window.location.pathname = "/cr"
           })
           .catch((err) => {
             if (err.message === "The password is invalid or the user does not have a password.") {
+              classList.remove("loading");
               M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
             }
           });
       } else {
+        classList.remove("loading");
         M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
       }
     })
@@ -56,7 +61,7 @@ class CrLogin extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Log In</h1>
-            <form onSubmit={this.handleLogin} style={{ width: "100%" }}>
+            <form style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
                   <label htmlFor="email">
@@ -91,7 +96,7 @@ class CrLogin extends Component {
                 </div>
               </div>
               <footer>
-                <button type="submit" className="btn-login">
+                <button onClick={this.handleLogin} type="submit" className="btn-login">
                   Log In
                 </button>
               </footer>

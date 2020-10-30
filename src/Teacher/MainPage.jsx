@@ -3,7 +3,7 @@ import Details from "./Details";
 import Class from "./Class";
 import Lecture from "./Lecture";
 import AddLecture from "./AddLecture";
-import Loader from "../Loader/Loader";
+// import Loader from "../Loader/Loader";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
 import DarkToggle from "../DarkToggle/DarkToggle"
@@ -88,7 +88,7 @@ class MainPage extends Component {
         <div className="code-head-btn">
           {/* signout btn */}
           <DarkToggle />
-          <h1 className="mainPageHeading mx-auto" style={{ marginTop: "-3vh" }}>
+          <h1 className="mainPageHeading mx-auto">
             Teacher Control Center!
           </h1>
           <i

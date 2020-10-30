@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./assets/css/home.css";
 import "./assets/css/Login.css";
 import "./assets/css/mainPage.css";
+import "./assets/css/loadingButton.css";
 import MainNavBar from "./NavBar/mainNavBar";
 import Loader from "./Loader/Loader";
 
@@ -31,8 +32,8 @@ function App() {
     <div className="App">
       <Router>
         <MainNavBar />
-        <Switch>
           <Suspense fallback={<Loader />}>
+            <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/student" exact component={StuLanding} />
             <Route path="/student/login" exact component={StuLogin} />
@@ -49,9 +50,9 @@ function App() {
             <Route path="/newteacher" exact component={NewTeacher} />
             <Route path="/newteacher/details" exact component={TeacherDetails} />
             <Route path="/about" exact component={About} />
+            <Route path="/" component={NotFound} />
+            </Switch>
           </Suspense>
-            <Route path="*" component={NotFound} />
-        </Switch>
       </Router>
     </div>
   );

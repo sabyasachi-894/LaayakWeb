@@ -72,7 +72,8 @@ class AddSubject extends Component {
               type="email"
               className="form-control"
               id="teacher-id"
-              name="teacherId"              
+              name="teacherId"
+              required
               value={this.state.teacherId}
               onChange={this.fetchTeacher}
             />
@@ -88,6 +89,7 @@ class AddSubject extends Component {
               name="teacherName"
               disabled={this.state.disabled}
               value={this.state.teacherName}
+              required
               onChange={this.handleChange}
             />
           </div>
@@ -101,6 +103,7 @@ class AddSubject extends Component {
               id="code"
               name="code"
               value={this.state.code}
+              required
               onChange={this.handleChange}
             />
           </div>
@@ -112,6 +115,7 @@ class AddSubject extends Component {
               id="name"
               name="subject"
               value={this.state.subject}
+              required
               onChange={this.handleChange}
             />
           </div>          

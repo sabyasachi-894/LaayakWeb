@@ -8,7 +8,7 @@ class Class extends Component {
       <div className="up-container d-flex flex-column container-fluid">
         <div className="up mx-auto">
           <div className="ann-preview">    
-            <ul>
+            <ul style={{listStyle: "none"}}>
               {this.props.class.subjects.map((sub) => (
                 <h4 key={sub.code + sub.name}><li>{sub.name}</li></h4>
               ))}

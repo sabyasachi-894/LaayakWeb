@@ -107,7 +107,9 @@ class AfterSignup extends Component {
 
   handleSubmitDetails = (e) => {
     e.preventDefault();
-    this.initAll();
+    const classList = e.target.classList;
+    classList.add("loading");
+    this.initAll(classList);
   };
 
   getDetails = () => {
@@ -116,7 +118,7 @@ class AfterSignup extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Additional Details</h1>
-            <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
+            <form style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
                   <label htmlFor="crName">Username</label>
@@ -180,7 +182,7 @@ class AfterSignup extends Component {
                 </div>
               </div>
               <footer>
-                <button type="submit" className="btn-login">
+                <button onClick={this.handleSubmitDetails} type="submit" className="btn-login">
                   Submit
                 </button>
               </footer>
@@ -191,7 +193,7 @@ class AfterSignup extends Component {
     );
   };
 
-  initAll = () => {
+  initAll = (classList) => {
     this.setState({
       redirect: true,
     });
@@ -205,6 +207,7 @@ class AfterSignup extends Component {
     fcmRef.set({ fcmTokens: [] });
     const detailsRef = docRef.collection("details").doc("stuList");
     detailsRef.set({ studentsList: [] });
+    classList.remove("loading")
   };
 }
 

@@ -1,7 +1,7 @@
 /* Headings */
 .mainPageHeading {
   font-size: 72px;
-  margin-top: 10px;
+  margin-top: -3vh;
   margin-bottom: 10px;
   text-decoration: underline;
 }
@@ -312,10 +312,11 @@ p {
 
 @media screen and (max-width: 576px) {
   .mainPageHeading {
-    font-size: 52px;
+    margin-top: 0;
+    font-size: 36px;
   }
   .subHeading {
-    font-size: 42px;
+    font-size: 33px;
   }
   .up .emoji {
     font-size: 50px !important;
@@ -333,7 +334,10 @@ p {
     right: 3%;
   }
   .up h4, .lec h4{
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+  .up h3 {
+    font-size: 1.3rem;
   }
   .lec-preview {
     padding: 30px 15px 30px 15px;
@@ -351,7 +355,7 @@ p {
     font-size: 1.2rem;
   }
   .lec h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   .lec h5 {
     font-size: .75rem;
@@ -362,31 +366,6 @@ p {
   }
   .lec .time, .lec .main-data {
     height: 100px !important;
-  }
-}
-  
-.wrong-pass {
-  animation-name: shake, glow-red;
-  animation-duration: 0.7s, 0.35s;
-  animation-iteration-count: 1, 2;
-}
-
-@keyframes shake {
-  0%, 20%, 40%, 60%, 80% {
-    transform: translateX(8px);
-  }
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translateX(-8px);
-  }
-}
-
-@keyframes glow-red {
-  50% {
-    border-color: indianred;
   }
 }
 

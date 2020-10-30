@@ -23,7 +23,7 @@ function StuSignup() {
         }
       });
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [code]);
 
   const obj = {
@@ -47,50 +47,56 @@ function StuSignup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    checkDetails();
+    console.log(duplicate);
+    const classList = e.target.classList;
+    classList.add("loading");
+    checkDetails(classList);
   };
 
   const checkRollNo = (rollNo) => {
     setDup(false);
     list.forEach(student => {
-      console.log(student);
       if (student.rollNo === rollNo) {
-        console.log(rollNo);
         setDup(true);
       }
     });
   }
 
-  const checkDetails = () => {
+  const checkDetails = (classList) => {
     const docCheck = db.collection("classes").doc(code);
     docCheck
       .get()
       .then(function (doc) {
         if (doc.exists) {
-          createUser();
+          createUser(classList);
         } else {
+          classList.remove("loading");
           M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })
         }
       })
       .catch(function (error) {
+        classList.remove("loading");
         M.toast({ html: error.message, classes: "toast error-toast" })
       });
   };
 
-  const createUser = () => {
+  const createUser = (classList) => {
     const auth = firebase.auth();
     auth
       .createUserWithEmailAndPassword(email, pass)
       .then(() => {
+        classList.remove("loading");
         M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
         if (duplicate) {
+          classList.remove("loading");
           M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
-          return 
+          return
         }
         createDoc();
-        addToCRList();        
+        addToCRList();
       })
       .catch((err) => {
+        classList.remove("loading");
         M.toast({ html: err.message, classes: "toast error-toast" })
       });
   };
@@ -133,7 +139,7 @@ function StuSignup() {
       <div className="container-login mx-auto">
         <div className="con-login">
           <h1>Join Your Classmates</h1>
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <form style={{ width: "100%" }}>
             <div className="con-inputs mt-4">
               <div className="con-input">
                 <label htmlFor="code">
@@ -187,7 +193,7 @@ function StuSignup() {
                 Already Joined? <Link to="/student/login">Log In</Link>
               </div>
               <footer>
-                <button type="submit" className="btn-login">
+                <button onClick={handleSubmit} type="submit" className="btn-login">
                   Log In
                 </button>
               </footer>

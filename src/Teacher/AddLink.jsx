@@ -71,11 +71,12 @@ class AddLink extends Component {
           <label className="col-sm-2 col-form-label">Link:</label>
           <div className="col-sm-9">
             <input
-              type="text"
+              type="url"
               className="form-control"
               placeholder="https://link.com"
               name="link"
               value={this.state.link}
+              required
               onChange={this.handleChange}
             />
           </div>
@@ -89,6 +90,7 @@ class AddLink extends Component {
               placeholder="about the link"
               name="text"
               value={this.state.text}
+              required
               onChange={this.handleChange}
             />
           </div>

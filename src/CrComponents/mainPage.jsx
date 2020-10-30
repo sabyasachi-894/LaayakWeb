@@ -102,7 +102,7 @@ class MainPage extends Component {
       <div className="container-fluid">
         <div className="code-head-btn">
           <DarkToggle />
-          <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
+          <h1 className="mainPageHeading">
             CR Control Page!
           </h1>
           <Dropdown className="float-md-right mb-2">

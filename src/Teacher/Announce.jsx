@@ -69,9 +69,9 @@ class AddAnnouncement extends Component {
             className="form-control mr-2"
             placeholder="Enter your main text here..."
             value={this.state.text}
-            onChange={this.handleChange}
             name="text"
             required
+            onChange={this.handleChange}
           />
         </div>
         <button

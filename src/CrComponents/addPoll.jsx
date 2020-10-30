@@ -70,6 +70,7 @@ class AddPoll extends Component {
               id="formGroupExampleInput"
               placeholder="Poll Details"
               name="text"
+              required
               value={this.state.text}
               onChange={this.handleChange}
             />
@@ -83,6 +84,7 @@ class AddPoll extends Component {
               className="form-control"
               placeholder="First option"
               name="yesOption"
+              required
               value={this.state.yesOption}
               onChange={this.handleChange}
             />
@@ -96,6 +98,7 @@ class AddPoll extends Component {
               className="form-control"
               placeholder="Second option"
               name="noOption"
+              required
               value={this.state.noOption}
               onChange={this.handleChange}
             />
