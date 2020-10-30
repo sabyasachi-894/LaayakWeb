@@ -15,7 +15,7 @@ class StuLogin extends Component {
         this.isMount = true;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.isMount = false;
     }
 

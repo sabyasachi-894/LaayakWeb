@@ -38,7 +38,7 @@ class Landing extends Component {
         this.isMount = true
         this.authListener();
     }
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.isMount = false
     }
 

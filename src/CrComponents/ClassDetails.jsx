@@ -20,7 +20,7 @@ class classDetails extends Component {
 
   componentDidMount() {
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.isMount = false;
   }
   render() {

@@ -19,7 +19,7 @@ class StuLanding extends Component {
     this.checkAuth();
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.isMount = false;
   }
 
