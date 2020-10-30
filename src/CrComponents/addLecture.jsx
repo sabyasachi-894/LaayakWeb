@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 
 class AddLecture extends Component {
   isMount = false;
@@ -51,11 +51,11 @@ class AddLecture extends Component {
           dialogClassName="modal-dialog-scrollable modal-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
+            <Modal.Title>
+              <h3>Add Lecture Details:</h3>
+            </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {this.getForm()}
-          </Modal.Body>
+          <Modal.Body>{this.getForm()}</Modal.Body>
         </Modal>
       </div>
     );
@@ -78,7 +78,11 @@ class AddLecture extends Component {
               </option>
               {this.props.subjects.map((sub) => {
                 return (
-                  <option className="add-lec-opns" key={sub.subjectCode} value={sub.subjectCode}>
+                  <option
+                    className="add-lec-opns"
+                    key={sub.subjectCode}
+                    value={sub.subjectCode}
+                  >
                     {sub.subject}
                   </option>
                 );
@@ -106,7 +110,11 @@ class AddLecture extends Component {
                   className="form-control"
                   type="datetime-local"
                   name="startTime"
-                  min={ new Date().toJSON().split(':')[0]+":"+new Date().toJSON().split(':')[1]}
+                  min={
+                    new Date().toJSON().split(":")[0] +
+                    ":" +
+                    new Date().toJSON().split(":")[1]
+                  }
                   id="startTime"
                   onChange={this.handleChange}
                   required
@@ -118,7 +126,11 @@ class AddLecture extends Component {
                   className="form-control"
                   type="datetime-local"
                   name="endTime"
-                  min={new Date().toJSON().split(':')[0]+":"+new Date().toJSON().split(':')[1]}
+                  min={
+                    new Date().toJSON().split(":")[0] +
+                    ":" +
+                    new Date().toJSON().split(":")[1]
+                  }
                   id="endTime"
                   onChange={this.handleChange}
                   required
@@ -189,6 +201,13 @@ class AddLecture extends Component {
     const startDate = new Date(start),
       endDate = new Date(end);
 
+    const presentCheck = Date.now() - 60000;
+
+    if (start < presentCheck || end < presentCheck) {
+      alert("Entered class timings can not be in past");
+      return;
+    }
+
     const newLecture = {
       subject: this.state.subject,
       subjectCode: this.state.subjectCode,
@@ -211,7 +230,7 @@ class AddLecture extends Component {
       text: "",
       group: "",
     });
-  }
-};
+  };
+}
 
 export default AddLecture;
