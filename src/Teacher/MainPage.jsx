@@ -83,7 +83,7 @@ class MainPage extends Component {
   }
 
   render() {
-    const display = this.state.loading ? <Loader /> : (
+    const display = (
       <div className="container-fluid">
         <div className="code-head-btn">
           {/* signout btn */}
@@ -155,6 +155,9 @@ class MainPage extends Component {
     this.setState({
       lecturesToday: []
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 200)
   };
   // All update/edit functions
   handleDetailsEdit = () => { };
@@ -177,6 +180,9 @@ class MainPage extends Component {
     this.setState({
       lecturesToday: []
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 200)    
   };
 }
 

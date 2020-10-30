@@ -23,6 +23,9 @@ class Lecture extends Component {
     let startHour = startTime.toDate().getHours(),
       startMins = startTime.toDate().getMinutes(),
       startAmPm = "am";
+    if (startHour === 12) {
+      startAmPm = "pm";
+    }
     if (startHour > 12) {
       startHour = startHour - 12;
       startAmPm = "pm";
@@ -32,7 +35,9 @@ class Lecture extends Component {
     let endHour = endTime.toDate().getHours(),
       endMins = endTime.toDate().getMinutes(),
       endAmPm = "am";
-
+    if (endHour === 12) {
+      endAmPm = "pm";
+    }
     if (endHour > 12) {
       endHour = endHour - 12;
       endAmPm = "pm";
@@ -40,7 +45,7 @@ class Lecture extends Component {
     let endMin = endMins < 10 ? ("0" + String(endMins)) : String(endMins);
     return (
       <div className="container">
-        <div className="lec lec-hover" id={startTime+link}>
+        <div className="lec lec-hover" id={startTime + link}>
           <div className="lec-preview">
             <div className="time">
               <h3>{startHour} : {startMin} {startAmPm}</h3>
@@ -74,7 +79,7 @@ class Lecture extends Component {
                 more="More"
                 less="Less"
                 anchorClass=""
-                onClick={() => document.getElementById(startTime+link).classList.toggle("lec-hover")}
+                onClick={() => document.getElementById(startTime + link).classList.toggle("lec-hover")}
                 expanded={false}>
                 {text ? text : "No Info Provided"}
               </ShowMoreText>
@@ -92,7 +97,7 @@ class Lecture extends Component {
       </div>
 
     );
-  };   
+  };
 }
 
 export default Lecture;

@@ -20,10 +20,13 @@ class Lecture extends Component {
       sem,
       group,
     } = this.props.lecture;
-    
+
     let startHour = startTime.toDate().getHours(),
       startMins = startTime.toDate().getMinutes(),
       startAmPm = "am";
+    if (startHour === 12) {
+      startAmPm = "pm";
+    }
     if (startHour > 12) {
       startHour = startHour - 12;
       startAmPm = "pm";
@@ -33,7 +36,9 @@ class Lecture extends Component {
     let endHour = endTime.toDate().getHours(),
       endMins = endTime.toDate().getMinutes(),
       endAmPm = "am";
-
+    if (endHour === 12) {
+      endAmPm = "pm";
+    }
     if (endHour > 12) {
       endHour = endHour - 12;
       endAmPm = "pm";
@@ -41,9 +46,9 @@ class Lecture extends Component {
     let endMin = endMins < 10 ? ("0" + String(endMins)) : String(endMins);
     return (
       <div className="container">
-        <div className="lec lec-hover" id={startTime+link}>
+        <div className="lec lec-hover" id={startTime + link}>
           <div className="lec-preview">
-            <div className="time" style={{height: "148px"}}>
+            <div className="time" style={{ height: "148px" }}>
               <h3>{startHour} : {startMin} {startAmPm}</h3>
               <div className="mb-2" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 {/* <span className="vertical-line" style={{ height: "25px" }}></span> */}
@@ -63,7 +68,7 @@ class Lecture extends Component {
               </a>
           </div>
           <div className="lec-info text-left">
-            <div className="main-data" style={{height: "148px"}}>
+            <div className="main-data" style={{ height: "148px" }}>
               <h2><strong>{subject}</strong></h2>
               <h4>Branch: {branch}</h4>
               <h4>Semester: {sem}</h4>
@@ -72,11 +77,11 @@ class Lecture extends Component {
             <hr />
             <h5><strong>Description: </strong>
               <ShowMoreText
-                lines={2}
+                lines={1}
                 more="More"
                 less="Less"
                 anchorClass=""
-                onClick={() => document.getElementById(startTime+link).classList.toggle("lec-hover")}
+                onClick={() => document.getElementById(startTime + link).classList.toggle("lec-hover")}
                 expanded={false}>
                 {text ? text : "No Info Provided"}
               </ShowMoreText>
@@ -94,7 +99,7 @@ class Lecture extends Component {
       </div>
 
     );
-  };  
+  };
 }
 
 export default Lecture;
