@@ -74,13 +74,13 @@
   object-fit: contain;
 }
 
-@media screen and (min-width: 576px){
-  .ann-container {
-    width: 101vw;    
-    background: #aaa url("https://st.depositphotos.com/1032463/1373/i/450/depositphotos_13732950-stock-photo-background-of-old-vintage-newspapers.jpg") fixed;
-    background-blend-mode: soft-light;    
-  }
-}
+/* @media screen and (min-width: 576px){ */
+  /* .ann-container { */
+    /* width: 101vw; */
+    /* background: #aaa url("https://st.depositphotos.com/1032463/1373/i/450/depositphotos_13732950-stock-photo-background-of-old-vintage-newspapers.jpg") fixed; */
+    /* background-blend-mode: soft-light; */
+  /* } */
+/* } */
 
 .my-flex-container {
   display: flex;
