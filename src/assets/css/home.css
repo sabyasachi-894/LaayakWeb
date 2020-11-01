@@ -29,7 +29,8 @@ body {
 
 .title {
   font-family: "Lobster", cursive;
-  font-size: 6vw;
+  font-size: 7vw;
+  text-align: center;
 }
 
 @media (max-width: 500px) {
@@ -40,110 +41,32 @@ body {
 
 .titleheader {
   margin-top: -10vh;
+  padding-top: 12vh;
+  background: url("https://usersthink.com/img/99-free-images-small/02-usersthink-stock-image-small.jpg");
+  background-attachment: fixed;
+  background-color: #5f9ea0;
+  background-blend-mode: lighten;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.home-page {
-  margin-top: 20vh;
-}
-
-.home-emoji {
-  font-size: 100px;
-  cursor: pointer;
-}
-
-.about-content {
-  margin: 0 auto;
-  width: 80%;
-  font-size: 20px;
-}
-
-.about-title {
-  color: purple;
-  text-decoration: underline;
-}
-
-.dev-email {
-  color: rgba(29, 29, 29, 0.842);
-}
-
-
-/* Developers */
-.dev-container {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  padding: 15px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.5s;
-}
-
-.social {
-  width: 40px;
-  height: 40px;
-  background: #faebd78a;
-  border-radius: 50%;  
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.titleheader .image {
   position: absolute;
-  z-index: -1;
-  transition: 0.5s;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40vw;
+  min-width: 400px;
 }
 
-.name {
-  color: #212529;
-  font-size: 20px;  
-  letter-spacing: -10px;
-  position: absolute;
-  z-index: -1;
-  transition: 0.5s;
+.get-started {
+  margin-top: 20px;  
 }
 
-.dev-container img {
-  max-width: 100%;
-  max-height: 100%;
-  border-radius: 50%;
-}
-
-.dev-container:hover {
-  transform: translateY(25px);
-}
-
-.dev-container:hover .name {
-  letter-spacing: normal;
-  transform: translateY(80px);
-}
-
-.dev-container:hover img {
-  box-shadow: 0 0 20px rgb(129, 43, 128);
-}
-
-.dev-container:hover .social {
-  transition-delay: 0.1s;
-  box-shadow: 0 0 20px rgb(129, 43, 128);
-}
-
-.dev-container:hover .social:nth-child(1) {  
-  transform: rotate(-45deg) translateY(-90px);
-}
-
-.dev-container:hover .social:nth-child(2) {
-  transform:  translateY(-90px);
-}
-
-.dev-container:hover .social:nth-child(3) {
-  transform:  rotate(45deg) translateY(-90px);
-}
-
-.dev-container a {
-  transition: 1s;
-  text-decoration: none;
-  color: #212529;
-}
-
-.social:hover a {  
-  color: rgb(129, 43, 128);
-  transform: rotate(360deg);
+.get-started h1{
+  text-align: left;
+  margin-left: 10px;
 }

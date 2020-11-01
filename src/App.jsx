@@ -2,13 +2,14 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "./assets/css/home.css";
+import "./assets/css/about.css";
 import "./assets/css/Login.css";
 import "./assets/css/mainPage.css";
 import "./assets/css/loadingButton.css";
 import MainNavBar from "./NavBar/mainNavBar";
 import Loader from "./Loader/Loader";
 
-const Home = lazy(() => import("./home"));
+const Home = lazy(() => import("./Home/home"));
 const StuLanding = lazy(() => import("./StuComponents/stuLanding"));
 const StuSignup = lazy(() => import('./StuComponents/StuSignup'));
 const CrLanding = lazy(() => import("./CrComponents/crLanding"));
