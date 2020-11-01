@@ -76,7 +76,7 @@
 }
 
 .light .con-new a {
-	color: #fff;
+	color: #fff !important;
 }
 
 @media (max-width: 500px) {

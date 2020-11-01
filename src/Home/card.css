@@ -5,13 +5,17 @@
   --transition-time: 1s;
 }
 
-.cards-wrapper {
+.cards-wrapper {  
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr;  
   margin: 0 auto;
+}
+
+.cards-wrapper a{
+  text-decoration: none !important;
 }
 
 .card {
