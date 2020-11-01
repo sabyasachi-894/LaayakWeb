@@ -42,11 +42,11 @@ class MainPage extends Component {
       .auth()
       .signOut()
       .then(() => {
-        M.toast({html: "Logged Out", classes: "toast success-toast"})
+        M.toast({ html: "Logged Out", classes: "toast success-toast" });
         window.location.reload();
       })
       .catch((err) => {
-        M.toast({html: err.message, classes: "toast error-toast"})
+        M.toast({ html: err.message, classes: "toast error-toast" });
       });
   };
 
@@ -92,7 +92,7 @@ class MainPage extends Component {
     el.select();
     document.execCommand("copy");
     document.body.removeChild(el);
-    M.toast({html: "Class Code Copied", classes: "toast success-toast"})
+    M.toast({ html: "Class Code Copied", classes: "toast success-toast" });
   };
 
   render() {
@@ -102,9 +102,8 @@ class MainPage extends Component {
       <div className="container-fluid">
         <div className="code-head-btn">
           <DarkToggle />
-          <h1 className="mainPageHeading">
-            CR Control Page!
-          </h1>
+          <h1 className="mainPageHeading">CR Control Page!</h1>
+
           <Dropdown className="float-md-right mb-2">
             <Dropdown.Toggle className="acc-dropdown" id="dropdown-basic">
               <i
@@ -113,7 +112,7 @@ class MainPage extends Component {
               />
             </Dropdown.Toggle>
 
-            <Dropdown.Menu>
+            <Dropdown.Menu className="cr-profile-dropdown">
               <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
               <Dropdown.Item onClick={this.copyLink}>
                 {" "}
@@ -131,6 +130,7 @@ class MainPage extends Component {
               >
                 <Dropdown.Item href="/cr/class">Class Details</Dropdown.Item>
               </Link>
+
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => this.handleSignOut()}>
                 <i
@@ -151,13 +151,19 @@ class MainPage extends Component {
           subjects={this.state.subjects}
         />
         <div className="lectures-row">
-          {this.state.lecturesToday.map((lecture) => (
-            <Lecture
-              lecture={lecture}
-              key={lecture.startTime}
-              onDelete={this.deleteLecture}
-            />
-          ))}
+          {this.state.lecturesToday.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No lectures for the day! Let students enjoy
+            </h4>
+          ) : (
+            this.state.lecturesToday.map((lecture) => (
+              <Lecture
+                lecture={lecture}
+                key={lecture.startTime}
+                onDelete={this.deleteLecture}
+              />
+            ))
+          )}
         </div>
         {/* Announcement/polls/links */}
         <div id="Announcements">
@@ -210,14 +216,21 @@ class MainPage extends Component {
           </div>
         </div>
         <div className="m-4 mx-n3 ann-container">
-          {this.state.announcements.map((announcement) => (
-            <Announcement
-              announcement={announcement}
-              id={announcement.dateAndTime}
-              key={announcement.dateAndTime}
-              onDelete={this.deleteAnnouncement}
-            />
-          ))}
+          {this.state.announcements.length !== 0 ? (
+            this.state.announcements.map((announcement) => (
+              <Announcement
+                announcement={announcement}
+                id={announcement.dateAndTime}
+                key={announcement.dateAndTime}
+                onDelete={this.deleteAnnouncement}
+              />
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              You can add any important announcements, polls or links for the
+              class
+            </h4>
+          )}
         </div>
         {/* list of subjects */}
         <div id="Subjects">
@@ -227,14 +240,20 @@ class MainPage extends Component {
         {/* button to add a new subject */}
         <AddSubject addSubject={this.addSubject} />
         <div className="my-flex-container">
-          {this.state.subjects.map((subject) => (
-            <Subject
-              subject={subject}
-              key={subject.subjectCode}
-              onDelete={this.deleteSubject}
-            />
-          ))}
-        </div>        
+          {this.state.subjects.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              Please add the subjects of corresponding semester
+            </h4>
+          ) : (
+            this.state.subjects.map((subject) => (
+              <Subject
+                subject={subject}
+                key={subject.subjectCode}
+                onDelete={this.deleteSubject}
+              />
+            ))
+          )}
+        </div>
         <BottomNav paths={["Lectures", "Announcements", "Subjects"]} />
       </div>
     );
@@ -344,13 +363,14 @@ class MainPage extends Component {
     };
     db.runTransaction((trans) => {
       return trans.get(teachClassRef).then((doc) => {
-        if (doc.data().subjects){
-        if (doc.data().subjects.length === 1) {
-          trans.delete(teachClassRef);
-        } else {
-          trans.update(teachClassRef, {
-            subjects: firebase.firestore.FieldValue.arrayRemove(remSub),
-          });}
+        if (doc.data().subjects) {
+          if (doc.data().subjects.length === 1) {
+            trans.delete(teachClassRef);
+          } else {
+            trans.update(teachClassRef, {
+              subjects: firebase.firestore.FieldValue.arrayRemove(remSub),
+            });
+          }
         }
       });
     });
@@ -364,11 +384,3 @@ class MainPage extends Component {
 }
 
 export default MainPage;
-
-// TODO:
-// logout btn
-// cards of subjects
-// lectures today + // announcements
-// cr profile with sem and batch details
-
-// passwordCSE@laayak

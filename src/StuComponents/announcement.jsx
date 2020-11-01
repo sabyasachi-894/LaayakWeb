@@ -21,11 +21,9 @@ class Announcement extends Component {
   render() {
     return (
       <div className="up-container d-flex flex-column container-fluid">
-        <div className="up mx-auto">
-          {this.displayUpdate()}
-        </div>
+        <div className="up mx-auto">{this.displayUpdate()}</div>
       </div>
-    )
+    );
   }
 
   displayUpdate = () => {
@@ -49,20 +47,33 @@ class Announcement extends Component {
 
     const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
-    let hour = dateTime.getHours();    
+    let hour = dateTime.getHours();
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
     return (
       <>
         <div className="ann-preview">
-          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
-          <h3><span role="img" className="emoji" aria-label="announcement">📢</span></h3>
+          {isOfficial && (
+            <i
+              className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger"
+              style={{ fontSize: "30px" }}
+            ></i>
+          )}
+          <h3>
+            <span role="img" className="emoji" aria-label="announcement">
+              📢
+            </span>
+          </h3>
         </div>
         <div className="ann-info text-left">
-        <h6 className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
-        <div style={{minHeight: "50%", display: "flex", alignItems: "center"}}>
-          <h4>{text}</h4>
+          <h6 className="mb-3">
+            {month} {date}, {year} at {hour}:{min}
+          </h6>
+          <div
+            style={{ minHeight: "50%", display: "flex", alignItems: "center" }}
+          >
+            <h4>{text}</h4>
           </div>
         </div>
       </>
@@ -76,7 +87,7 @@ class Announcement extends Component {
 
     const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
-    let hour = dateTime.getHours();    
+    let hour = dateTime.getHours();
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
@@ -84,19 +95,31 @@ class Announcement extends Component {
     return (
       <>
         <div className="ann-preview">
-          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
-          <h3><span role="img" className="emoji" aria-label="announcement">🔗</span></h3>
+          {isOfficial && (
+            <i
+              className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger"
+              style={{ fontSize: "30px" }}
+            ></i>
+          )}
+          <h3>
+            <span role="img" className="emoji" aria-label="announcement">
+              🔗
+            </span>
+          </h3>
         </div>
         <div className="ann-info text-left">
-        <h6 className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
+          <h6 className="mb-3">
+            {month} {date}, {year} at {hour}:{min}
+          </h6>
           <h4>{text}</h4>
           <a
             className="btn link-btn btn-primary mt-2 float-right"
             href={link}
             target="_blank"
-            rel="noopener noreferrer" >
+            rel="noopener noreferrer"
+          >
             Visit Link
-              </a>
+          </a>
         </div>
       </>
     );
@@ -110,14 +133,14 @@ class Announcement extends Component {
       yesOption,
       noCount,
       noOption,
-      isOfficial
+      isOfficial,
     } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
     const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
-    let hour = dateTime.getHours();    
+    let hour = dateTime.getHours();
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
@@ -125,14 +148,25 @@ class Announcement extends Component {
     if (Number.isNaN(yesVotePercent)) yesVotePercent = 0;
     let noVotePercent = (noCount * 100) / (noCount + yesCount);
     if (Number.isNaN(noVotePercent)) noVotePercent = 0;
-    return (      
+    return (
       <>
         <div className="ann-preview">
-          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
-          <h3><span role="img" className="emoji" aria-label="announcement">🗳️</span></h3>
+          {isOfficial && (
+            <i
+              className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger"
+              style={{ fontSize: "30px" }}
+            ></i>
+          )}
+          <h3>
+            <span role="img" className="emoji" aria-label="announcement">
+              🗳️
+            </span>
+          </h3>
         </div>
         <div className="ann-info text-left">
-        <h6 className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
+          <h6 className="mb-3">
+            {month} {date}, {year} at {hour}:{min}
+          </h6>
           <h4>{text}</h4>
           <div className="row">
             <div className="col-md-12">
@@ -152,10 +186,11 @@ class Announcement extends Component {
                   </tr> */}
                 </tbody>
               </table>
-            </div>            
+              <p>PS: You can currently vote via app only!</p>
+            </div>
           </div>
         </div>
-      </>      
+      </>
     );
   };
 

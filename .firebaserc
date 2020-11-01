@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "laayak-web-app"
+  },
+  "targets": {
+    "laayak-web-app": {
+      "hosting": {
+        "laayak-web-app": [
+          "laayak2"
+        ],
+        "laayak2": [
+          "laayak-web-app"
+        ]
+      }
+    }
   }
 }

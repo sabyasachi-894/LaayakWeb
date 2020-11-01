@@ -6,7 +6,7 @@ import AddLecture from "./AddLecture";
 // import Loader from "../Loader/Loader";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
-import DarkToggle from "../DarkToggle/DarkToggle"
+import DarkToggle from "../DarkToggle/DarkToggle";
 import M from "materialize-css";
 
 // reference to firestore
@@ -20,7 +20,7 @@ class MainPage extends Component {
     details: [],
     lecturesToday: [],
     user: firebase.auth().currentUser,
-    loading: true
+    loading: true,
   };
 
   claRef = db.collection("classes");
@@ -32,15 +32,15 @@ class MainPage extends Component {
       .auth()
       .signOut()
       .then(() => {
-        M.toast({html: "Signed Out", classes: "toast success-toast"})
+        M.toast({ html: "Signed Out", classes: "toast success-toast" });
         window.location.reload();
       })
       .catch((err) => {
-        M.toast({html: err.message, classes: "toast error-toast"})
+        M.toast({ html: err.message, classes: "toast error-toast" });
       });
   };
 
-  // extracting data from db  
+  // extracting data from db
   componentDidMount() {
     // only data fetch
     this.isMount = true;
@@ -48,34 +48,43 @@ class MainPage extends Component {
       if (this.isMount) {
         this.setState({
           details: teacher.data().details,
-          loading: false
+          loading: false,
         });
       }
-    })
+    });
     this.teachClassRef.onSnapshot((querySnapshot) => {
       querySnapshot.docs.forEach((classTeaching) => {
         let { classesTeaching } = this.state;
         classesTeaching.push(classTeaching.data());
         if (this.isMount) {
-          this.setState({ classesTeaching })
+          this.setState({ classesTeaching });
         }
-        this.claRef.doc(classTeaching.id).collection("lectures").doc("lecturesToday").onSnapshot((snap) => {
-          let { lecturesToday } = this.state;
-          if (snap.data()) {
-            snap.data().lectures.forEach((l) => {
-              classTeaching.data().subjects.forEach((sub) => {
-                if (l.subjectCode === sub.code) {
-                  lecturesToday.push({ ...l, branch: classTeaching.data().details.branch, sem: classTeaching.data().details.sem, classId: classTeaching.data().details.classId });
-                }
-              })
-            })
-          }
-          if (this.isMount) {
-            this.setState({ lecturesToday })
-          }
-        })
-      })
-    })
+        this.claRef
+          .doc(classTeaching.id)
+          .collection("lectures")
+          .doc("lecturesToday")
+          .onSnapshot((snap) => {
+            let { lecturesToday } = this.state;
+            if (snap.data()) {
+              snap.data().lectures.forEach((l) => {
+                classTeaching.data().subjects.forEach((sub) => {
+                  if (l.subjectCode === sub.code) {
+                    lecturesToday.push({
+                      ...l,
+                      branch: classTeaching.data().details.branch,
+                      sem: classTeaching.data().details.sem,
+                      classId: classTeaching.data().details.classId,
+                    });
+                  }
+                });
+              });
+            }
+            if (this.isMount) {
+              this.setState({ lecturesToday });
+            }
+          });
+      });
+    });
   }
 
   UNSAFE_componentWillMount() {
@@ -88,21 +97,23 @@ class MainPage extends Component {
         <div className="code-head-btn">
           {/* signout btn */}
           <DarkToggle />
-          <h1 className="mainPageHeading mx-auto">
-            Teacher Control Center!
-          </h1>
+          <h1 className="mainPageHeading mx-auto">Teacher Control Center!</h1>
           <i
             style={{ fontSize: "30px", cursor: "pointer" }}
             onClick={this.handleSignOut}
             className="float-md-right mb-2 fa fa-sign-out"
           />
         </div>
-        <h2 id="Details" className="subHeading">Your Details: </h2>
+        <h2 id="Details" className="subHeading">
+          Your Details:{" "}
+        </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
 
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
         {/* lectures on the day */}
-        <h2 id="Lectures" className="subHeading">Lectures Today:</h2>
+        <h2 id="Lectures" className="subHeading">
+          Lectures Today:
+        </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
 
         <AddLecture
@@ -111,31 +122,45 @@ class MainPage extends Component {
         />
 
         <div className="lectures-row">
-          {this.state.lecturesToday.map((lecture) => (
-            <Lecture
-              lecture={lecture}
-              key={lecture.startTime + lecture.classId}
-              onDelete={this.deleteLecture}
-            />
-          ))}
+          {this.state.lecturesToday.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              There are no lectures for the day yet!
+            </h4>
+          ) : (
+            this.state.lecturesToday.map((lecture) => (
+              <Lecture
+                lecture={lecture}
+                key={lecture.startTime + lecture.classId}
+                onDelete={this.deleteLecture}
+              />
+            ))
+          )}
         </div>
+
         {/* CLASSES YOU TEACH */}
-        <h2 id="Classes" className="subHeading">Classes You Teach:</h2>
+        <h2 id="Classes" className="subHeading">
+          Classes You Teach:
+        </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <div className="my-flex-container">
-          {this.state.classesTeaching.map((classTeaching) => (
-            <Class
-              key={classTeaching.details.classId}
-              class={classTeaching}
-            />
-          ))}
+          {this.state.classesTeaching.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No classes are assigned to you yet! Please contact the CR of
+              respective class
+            </h4>
+          ) : (
+            this.state.classesTeaching.map((classTeaching) => (
+              <Class
+                key={classTeaching.details.classId}
+                class={classTeaching}
+              />
+            ))
+          )}
         </div>
-        <BottomNav
-          paths={["Details", "Lectures", "Classes"]}
-        />
+        <BottomNav paths={["Details", "Lectures", "Classes"]} />
       </div>
     );
-    return display
+    return display;
   }
   // All add functions
   addLecture = (newLecture) => {
@@ -147,22 +172,26 @@ class MainPage extends Component {
       startTime: newLecture.startTime,
       endTime: newLecture.endTime,
       group: newLecture.group,
-      text: newLecture.text
-    }
-    this.claRef.doc(newLecture.classId).collection("lectures").doc("lecturesToday").update({
-      lectures: firebase.firestore.FieldValue.arrayUnion(updatedLecture)
-    })
+      text: newLecture.text,
+    };
+    this.claRef
+      .doc(newLecture.classId)
+      .collection("lectures")
+      .doc("lecturesToday")
+      .update({
+        lectures: firebase.firestore.FieldValue.arrayUnion(updatedLecture),
+      });
     this.setState({
-      lecturesToday: []
+      lecturesToday: [],
     });
     setTimeout(() => {
       window.location.reload();
-    }, 200)
+    }, 200);
   };
   // All update/edit functions
-  handleDetailsEdit = () => { };
+  handleDetailsEdit = () => {};
 
-  // All delete functions  
+  // All delete functions
   deleteLecture = (lecture) => {
     const delLec = {
       subject: lecture.subject,
@@ -173,16 +202,20 @@ class MainPage extends Component {
       startTime: lecture.startTime,
       endTime: lecture.endTime,
       text: lecture.text,
-    }
-    this.claRef.doc(lecture.classId).collection("lectures").doc("lecturesToday").update({
-      lectures: firebase.firestore.FieldValue.arrayRemove(delLec)
-    })
+    };
+    this.claRef
+      .doc(lecture.classId)
+      .collection("lectures")
+      .doc("lecturesToday")
+      .update({
+        lectures: firebase.firestore.FieldValue.arrayRemove(delLec),
+      });
     this.setState({
-      lecturesToday: []
+      lecturesToday: [],
     });
     setTimeout(() => {
       window.location.reload();
-    }, 200)    
+    }, 200);
   };
 }
 

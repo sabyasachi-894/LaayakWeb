@@ -1,14 +1,20 @@
 {
-  "hosting": {
+  "hosting": [{
     "public": "build",
+    "target": "laayak2",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [{
-      "source": "**",
-      "destination": "/index.html"
-      }]
-  }
+    ]
+  },
+  {
+    "public": "build",
+    "target": "laayak-web-app",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }]
 }

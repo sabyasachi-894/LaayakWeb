@@ -9,7 +9,7 @@ import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import M from 'materialize-css';
+import M from "materialize-css";
 
 // reference to firestore
 const db = firebase.firestore();
@@ -29,31 +29,47 @@ class MainPage extends Component {
   stuDocRef = db.collection("students").doc(this.props.email);
 
   fetchClassDetails = () => {
-    db.collection("classes").doc(this.state.classCode).onSnapshot((doc) => {
-      if (doc.data()) {
-        this.setState({
-          subjects: doc.data().subjects.map((subject) => { return { ...subject } }),
-          details: doc.data().details,
-          loading: false,
-        })
-      }
-    });
-    db.collection("classes").doc(this.state.classCode).collection("lectures").doc("lecturesToday").onSnapshot((doc) => {
-      if (doc.data()) {
-        this.setState({
-          lecturesToday: doc.data().lectures.map((lecture) => { return { ...lecture } })
-        });
-      }
-    });
-    db.collection("classes").doc(this.state.classCode).collection("updates").doc("announcements").onSnapshot((doc) => {
-      if (doc.data()) {
-        this.setState({
-          announcements: doc.data().announcements.map((announcement) => { return { ...announcement } }),
-        });
-        this.sortAnnouncements();
-      }
-    });
-  }
+    db.collection("classes")
+      .doc(this.state.classCode)
+      .onSnapshot((doc) => {
+        if (doc.data()) {
+          this.setState({
+            subjects: doc.data().subjects.map((subject) => {
+              return { ...subject };
+            }),
+            details: doc.data().details,
+            loading: false,
+          });
+        }
+      });
+    db.collection("classes")
+      .doc(this.state.classCode)
+      .collection("lectures")
+      .doc("lecturesToday")
+      .onSnapshot((doc) => {
+        if (doc.data()) {
+          this.setState({
+            lecturesToday: doc.data().lectures.map((lecture) => {
+              return { ...lecture };
+            }),
+          });
+        }
+      });
+    db.collection("classes")
+      .doc(this.state.classCode)
+      .collection("updates")
+      .doc("announcements")
+      .onSnapshot((doc) => {
+        if (doc.data()) {
+          this.setState({
+            announcements: doc.data().announcements.map((announcement) => {
+              return { ...announcement };
+            }),
+          });
+          this.sortAnnouncements();
+        }
+      });
+  };
 
   // extracting data from db
   componentDidMount() {
@@ -61,15 +77,15 @@ class MainPage extends Component {
       if (doc.exists) {
         this.setState({
           stuDoc: doc.data(),
-          classCode: doc.data().classCode
-        })
-        if(doc.data().classCode){
+          classCode: doc.data().classCode,
+        });
+        if (doc.data().classCode) {
           this.fetchClassDetails();
         }
       } else {
-        this.setState({ loading: false })
+        this.setState({ loading: false });
       }
-    })
+    });
   }
 
   handleSignOut = () => {
@@ -77,17 +93,19 @@ class MainPage extends Component {
       .auth()
       .signOut()
       .then(() => {
-        M.toast({html: "Signed Out", classes: "toast success-toast"})
+        M.toast({ html: "Signed Out", classes: "toast success-toast" });
         window.location.reload();
       })
       .catch((err) => {
-        M.toast({html: err.message, classes: "toast error-toast"});
+        M.toast({ html: err.message, classes: "toast error-toast" });
       });
   };
 
   render() {
-    var display = <Loader />
-    display = this.state.loading ? <Loader /> : (
+    var display = <Loader />;
+    display = this.state.loading ? (
+      <Loader />
+    ) : (
       <div className="container-fluid">
         <div className="code-head-btn">
           <DarkToggle />
@@ -103,13 +121,11 @@ class MainPage extends Component {
               <Link
                 to={{
                   pathname: "/student/profile",
-                  state: {doc: this.state.stuDoc}
+                  state: { doc: this.state.stuDoc },
                 }}
                 style={{ textDecoration: "none" }}
               >
-                <Dropdown.Item href="/student/profile">
-                  Profile
-                </Dropdown.Item>
+                <Dropdown.Item href="/student/profile">Profile</Dropdown.Item>
               </Link>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => this.handleSignOut()}>
@@ -135,40 +151,75 @@ class MainPage extends Component {
         <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
 
         <div className="lectures-row">
-          {this.state.lecturesToday.map((lecture) => (
-            <Lecture lecture={lecture} key={lecture.startTime} />
-          ))}
+          {this.state.lecturesToday.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No lectures for the day! Lets enjoy
+            </h4>
+          ) : (
+            this.state.lecturesToday.map((lecture) => (
+              <Lecture lecture={lecture} key={lecture.startTime} />
+            ))
+          )}
         </div>
 
         {/* Announcement/polls/links */}
         <div id="Announcements">
           <div className="d-inline container-fluid">
-            <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
+            <h2 className="subHeading">
+              Mitron! Announcement Suno{" "}
+              <span role="img" aria-label="announcement">
+                📢
+              </span>
+            </h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           </div>
           <div className="key-container">
             <div className="poll-card m-2" style={{ width: "90px" }}>
-              <span className="p-2"><i className="fa fa-bookmark text-danger mr-1" /> Official</span>
+              <span className="p-2">
+                <i className="fa fa-bookmark text-danger mr-1" /> Official
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "150px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  📢{" "}
+                </span>{" "}
+                Announcements
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🔗
+                </span>
+                Links
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🗳️
+                </span>
+                Polls
+              </span>
             </div>
           </div>
         </div>
         <div className="m-4 mx-n3 ann-container">
-          {this.state.announcements.map((announcement) => (
-            <Announcement
-              key={announcement.dateAndTime}
-              announcement={announcement}
-              id={announcement.dateAndTime}
-            />
-          ))}
+          {this.state.announcements.length !== 0 ? (
+            this.state.announcements.map((announcement) => (
+              <Announcement
+                announcement={announcement}
+                id={announcement.dateAndTime}
+                key={announcement.dateAndTime}
+              />
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              Any important announcements, polls or links for the class will be
+              shown here
+            </h4>
+          )}
         </div>
 
         {/* list of subjects */}
@@ -178,17 +229,21 @@ class MainPage extends Component {
         <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
 
         <div className="my-flex-container">
-          {this.state.subjects.map((subject) => (
-            <Subject subject={subject} key={subject.subjectCode} />
-          ))}
+          {this.state.subjects.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No subjects have been added by the CR yet!
+            </h4>
+          ) : (
+            this.state.subjects.map((subject) => (
+              <Subject subject={subject} key={subject.subjectCode} />
+            ))
+          )}
         </div>
 
-        <BottomNav
-          paths={["Class", "Lectures", "Announcements", "Subjects"]}
-        />
+        <BottomNav paths={["Class", "Lectures", "Announcements", "Subjects"]} />
       </div>
-    )
-    return (this.state.classCode !== " ") ? display : <h1>Join Your Friends</h1>; 
+    );
+    return this.state.classCode !== " " ? display : <h1>Join Your Friends</h1>;
   }
   // Sort Announcements
   sortAnnouncements = () => {
