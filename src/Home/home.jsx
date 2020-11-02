@@ -32,19 +32,19 @@ class Home extends Component {
               {
                 head: "Teacher",
                 content: "Ask teachers to register their themselves on Laayak",
-                bg: "http://theteachersdigest.com/wp-content/uploads/2014/10/Vectors-272.png",
+                bg: "images/teacher.jpg",
                 href: "/teacher"
               },
               {
                 head: "Class Representative",
                 content: "CRs can register their class and add subjects using Teacher ID",
-                bg: "https://cdn.pixabay.com/photo/2017/10/11/11/43/multi-tasking-2840792_960_720.jpg",
+                bg: "images/cr.jpg",
                 href: "/cr"
               },
               {
                 head: "Student",
                 content: "Students can join their class on Laayak using code provided by CR",
-                bg: "https://cdn.pixabay.com/photo/2016/04/01/11/10/boy-1300226_960_720.png",                
+                bg: "images/student.png",
                 href: "/student"
               }
             ]}
