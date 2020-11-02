@@ -52,3 +52,6 @@ typings/
 
 # firebase
 /src/firebase.jsx
+
+# Local Netlify folder
+.netlify
