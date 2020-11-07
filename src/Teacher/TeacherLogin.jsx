@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import M from "materialize-css"
 import firebase from "../firebase";
-
-let db = firebase.firestore();
+import ShowPassword from "../ShowPassword";
 
 class TeacherLogin extends Component {
   state = {
@@ -25,25 +24,23 @@ class TeacherLogin extends Component {
     classList.add("loading");
     const email = this.state.email,
       pass = this.state.password;
-    db.collection("teachers").doc(email).get().then((doc) => {
-      if (doc.data()) {
-        firebase.auth().signInWithEmailAndPassword(email, pass)
-          .then(() => {
-            classList.remove("loading");
-            M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
-            window.location.pathname = "/teacher"
-          })
-          .catch((err) => {
-            if (err.message === "The password is invalid or the user does not have a password.") {
-              classList.remove("loading");
-              M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-            }
-          });
-      } else {
-        classList.remove("loading");
-        M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-      }
-    })
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then((user) => {
+        if (user.user.displayName === "teacher") {
+          classList.remove("loading");
+          M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+          window.location.pathname = "/teacher"
+        } else {
+          classList.remove("loading");
+          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" });
+        }
+      })
+      .catch((err) => {
+        if (err.message === "The password is invalid or the user does not have a password.") {
+          classList.remove("loading");
+          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+        }
+      });
   };
 
   render() {
@@ -89,6 +86,7 @@ class TeacherLogin extends Component {
                     onChange={this.handleChange}
                     required
                   />
+                  <ShowPassword />
                 </div>
                 <div className="con-new">
                   New here? <Link to="/newteacher">Sign Up</Link>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import M from 'materialize-css';
 import firebase from "../firebase";
+import ShowPassword from "../ShowPassword"
 
 class StuLogin extends Component {
     db = firebase.firestore();
@@ -23,25 +24,30 @@ class StuLogin extends Component {
         e.preventDefault();
         const classList = e.target.classList;
         classList.add("loading");
-        this.db.collection("students").doc(this.state.email).get().then((doc) => {
-            if (doc.exists) {
-                firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                    .then((user) => {
-                        classList.remove("loading");
-                        M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
-                        window.location.pathname = "/student"
-                    })
-                    .catch((err) => {
-                        if (err.message === "The password is invalid or the user does not have a password.") {
-                            classList.remove("loading");
-                            M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-                        }
-                    });
-            } else {
-                classList.remove("loading");
-                M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-            }
-        })
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((user) => {
+                if (user.user.displayName === "student") {
+                    classList.remove("loading");
+                    M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+                    window.location.pathname = "/student"
+                } else {
+                    classList.remove("loading");
+                    M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+                }
+            })
+            .catch((err) => {
+                if 
+                (
+                    err.message === "The password is invalid or the user does not have a password." ||
+                    err.message === "There is no user record corresponding to this identifier. The user may have been deleted."
+                ) {
+                    classList.remove("loading");
+                    M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+                } else{
+                    classList.remove("loading");
+                    M.toast({ html: err.message, classes: "toast error-toast" })
+                }
+            });
     };
 
     handleChange = (e) => {
@@ -85,6 +91,7 @@ class StuLogin extends Component {
                                         onChange={this.handleChange}
                                         required
                                     />
+                                    <ShowPassword />
                                 </div>
                                 <div className="con-new">
                                     New here? <Link to="/student/signup">Sign Up</Link>

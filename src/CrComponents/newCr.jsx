@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "../firebase";
 import { Link, Redirect } from "react-router-dom";
 import M from "materialize-css";
+import ShowPassword from "../ShowPassword";
 
 const auth = firebase.auth(),
   db = firebase.firestore();
@@ -12,29 +13,18 @@ class NewCr extends Component {
   state = {
     email: "",
     password: "",
-    listOfCRs: {},
     authStatus: false,
     completedSignUp: false,
   };
 
   componentDidMount() {
     this.isMount = true;
-    const docRef = db.collection("students").doc("listOfCRs");
-    docRef.onSnapshot((doc) => {
-      if (this.isMount) {
-        this.setState({
-          listOfCRs: { ...doc.data().listOfCRs },
-        });
-      }
-    });
-
     if (this.isMount) {
       auth.onAuthStateChanged((user) => {
         if (user) {
-          const stuRef = db.collection("students").doc("listOfCRs");
+          const stuRef = db.collection("cr").doc(user.email);
           stuRef.onSnapshot((snap) => {
-            let listOfCRs = { ...snap.data().listOfCRs };
-            if (listOfCRs[user.email]) {
+            if (snap.data()) {
               this.setState({
                 completedSignUp: true,
               });
@@ -57,7 +47,10 @@ class NewCr extends Component {
     if (!this.state.authStatus) {
       auth
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((user) => {
+          user.user.updateProfile({
+            displayName: "cr"
+          })
           classList.remove("loading");
           M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
           this.setState({ authStatus: true });
@@ -83,8 +76,8 @@ class NewCr extends Component {
     return this.state.authStatus ? (
       <Redirect to="/newcr/details" />
     ) : (
-      <div>{this.getForm()}</div>
-    );
+        <div>{this.getForm()}</div>
+      );
   }
 
   getForm = () => {
@@ -118,6 +111,7 @@ class NewCr extends Component {
                     onChange={this.handleChange}
                     required
                   />
+                  <ShowPassword />
                 </div>
                 <div className="con-new">
                   Already registered? <Link to="/cr">Log In</Link>

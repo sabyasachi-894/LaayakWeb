@@ -62,6 +62,12 @@
 	transition: all .25s ease;
 }
 
+.con-input .fa-eye {
+	font-size: 20px;
+	margin-left: -30px;
+	cursor: pointer;
+}
+
 .con-input input:focus, .btn-login:focus{
 	outline: none;
 }
@@ -76,13 +82,12 @@
 }
 
 .light .con-new a {
-	color: #fff !important;
+	color: #ffffff !important;
 }
 
 @media (max-width: 500px) {
 	.container-login {		
-		width: 80%;
-		/* border-radius: 0; */
+		width: 80%;		
 	}
 }
 

@@ -17,7 +17,6 @@ class AfterSignup extends Component {
       sem: "",
       timeTable: "Himesh set krega",
     },
-    listOfCRs: {},
     redirect: false,
   };
 
@@ -55,42 +54,28 @@ class AfterSignup extends Component {
   };
 
   addDoc = () => {
-    const stuRef = db.collection("students").doc("listOfCRs");
     if (this.state.user) {
-      stuRef.onSnapshot((snap) => {
-        if (snap.data().listOfCRs[this.state.user.email]) {
+      const crRef = db.collection("cr").doc(this.state.user.email);
+      crRef.onSnapshot((snap) => {
+        if (snap.data()) {
           const claRef = db
             .collection("classes")
-            .doc(snap.data().listOfCRs[this.state.user.email]);
+            .doc(snap.data().classId);
 
           claRef.get().then((doc) => {
             if (doc.exists) {
               if (this.isMount) this.setState({ redirect: true });
             } else {
-              if (this.isMount) {
-                let listOfCRs = {
-                  ...snap.data().listOfCRs,
-                  [this.state.user.email]: docRef.id,
-                };
-                this.setState({ listOfCRs });
-                if (this.isMount)
-                  stuRef.set({
-                    listOfCRs: this.state.listOfCRs,
-                  });
-              }
+              if (this.isMount)
+                crRef.set({
+                  classId: docRef.id,
+                });
             }
           });
         } else {
-          if (this.isMount) {
-            let listOfCRs = {
-              ...snap.data().listOfCRs,
-              [this.state.user.email]: docRef.id,
-            };
-            this.setState({ listOfCRs });
-            stuRef.set({
-              listOfCRs: this.state.listOfCRs,
-            });
-          }
+          crRef.set({
+            classId: docRef.id,
+          });
         }
       });
     }

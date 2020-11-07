@@ -29,19 +29,19 @@ class StuLanding extends Component {
         if (this.isMount) {
           this.setState({ email: user.email })
         }
-        this.db.collection("students").doc(user.email).get().then((doc) => {
-          if (doc.exists) {            
-            if(this.isMount){
+        if (user.displayName === "student") {
+          if (this.isMount) {
             this.setState({
               access: true
             })
           }
-          }
-        })
+        }
       }
     });
     setTimeout(() => {
-      this.setState({ loading: false })
+      if (this.isMount) {
+        this.setState({ loading: false })
+      }
     }, 1000)
   }
 

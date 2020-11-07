@@ -4,6 +4,7 @@ import Contact from "./Contact/Contact";
 
 
 class Home extends Component {
+
   getHeader = () => {
     return (
       <header className="titleheader">

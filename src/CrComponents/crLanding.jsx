@@ -13,21 +13,29 @@ class CrLanding extends Component {
   state = {
     user: null,
     doc: "",
+    verified: false,
     loading: true
   };
 
   authListener = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        const docRef = db.collection("students").doc("listOfCRs");
-        docRef.get().then((doc) => {
-          const loc = doc.data().listOfCRs;
-          const email = user.email;
-          if (this.isMount) {
+        if(user.displayName === "cr"){
+          if(this.isMount){
             this.setState({
-              doc: loc[email],
-            });
+              verified: true
+            })
           }
+        }
+        const docRef = db.collection("cr").doc(user.email);
+        docRef.get().then((doc) => {
+          if(doc.exists){
+            if (this.isMount) {
+              this.setState({
+                doc: doc.data().classId,
+              });
+            }
+          }                    
         });
       }
       if (this.isMount) {
@@ -50,7 +58,7 @@ class CrLanding extends Component {
     (this.state.loading) && (display = <Loader />)
     if (!this.state.loading) {
       if (this.state.user) {
-        this.state.doc ?
+        this.state.verified ?
           display = <MainPage CrCode={this.state.doc} /> :
           display = <Forbidden />
       } else {

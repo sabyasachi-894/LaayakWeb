@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import firebase from "../firebase";
 import { Link, Redirect } from "react-router-dom";
 import M from "materialize-css";
+import ShowPassword from "../ShowPassword";
 
 const auth = firebase.auth();
 
@@ -23,7 +24,10 @@ class NewTeacher extends Component {
     if (!this.state.authStatus) {
       auth
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((user) => {
+          user.user.updateProfile({
+            displayName: "teacher"
+          })
           classList.remove("loading");
           M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
           this.setState({ authStatus: true });
@@ -89,6 +93,7 @@ class NewTeacher extends Component {
                     onChange={this.handleChange}
                     required
                   />
+                  <ShowPassword />
                 </div>
                 <div className="con-new">
                   Already registered? <Link to="/teacher">Log In</Link>

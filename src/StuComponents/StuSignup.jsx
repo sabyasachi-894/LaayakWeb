@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import M from 'materialize-css';
 import firebase from "../firebase";
+import ShowPassword from "../ShowPassword";
 
 const db = firebase.firestore();
 
@@ -10,90 +11,73 @@ function StuSignup() {
     [email, setEmail] = useState(""),
     [name, setName] = useState(""),
     [rno, setRno] = useState(null),
-    [pass, setPass] = useState(""),
-    [list, setList] = useState([]),
-    [duplicate, setDup] = useState(false);
+    [pass, setPass] = useState("");
+    // [list, setList] = useState([]),
+    // [duplicate, setDup] = useState(false);
 
-  useEffect(() => {
-    if (code) {
-      const checkRef = db.collection("classes").doc(code);
-      checkRef.get().then((doc) => {
-        if (doc.exists) {
-          getCurrentList();
-        }
-      });
+  // useEffect(() => {
+  //   if (code) {
+  //     const checkRef = db.collection("classes").doc(code);
+  //     checkRef.get().then((doc) => {
+  //       if (doc.exists) {
+  //         getCurrentList();
+  //       }
+  //     });
+  //   }
+  //   // eslint-disable-next-line
+  // }, [code]);
+
+
+  // const getCurrentList = () => {
+  //   const docRef = db
+  //     .collection("classes")
+  //     .doc(code)
+  //     .collection("details")
+  //     .doc("stuList");
+  //   docRef.onSnapshot((doc) => {
+  //     if (doc.data) setList([...doc.data().studentsList]);
+  //   });
+  // };
+
+  const rollNoChange = (e) => {
+    setRno(e.target.value);
+    // checkRollNo(e.target.value);
+  }
+
+  const checkRollNo = (rollNo, list) => {
+    // setDup(false);
+    let i;
+    for(i=0; i<list.length; i++){
+      if (list[i].rollNo === rollNo) {
+        // setDup(true);
+        return true;
+      }
     }
-    // eslint-disable-next-line
-  }, [code]);
+    if(i === list.length){
+      return false;
+    }    
+  }
 
-  const obj = {
-    classCode: code,
-    email,
-    name,
-    rollNo: rno,
-    verified: false,
-  };
 
-  const getCurrentList = () => {
-    const docRef = db
-      .collection("classes")
-      .doc(code)
-      .collection("details")
-      .doc("stuList");
-    docRef.onSnapshot((doc) => {
-      if (doc.data) setList([...doc.data().studentsList]);
-    });
-  };
+  // // // SUBMIT // // //
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(duplicate);
     const classList = e.target.classList;
     classList.add("loading");
-    checkDetails(classList);
+    createUser(classList);
   };
 
-  const checkRollNo = (rollNo) => {
-    setDup(false);
-    list.forEach(student => {
-      if (student.rollNo === rollNo) {
-        setDup(true);
-      }
-    });
-  }
-
-  const checkDetails = (classList) => {
-    const docCheck = db.collection("classes").doc(code);
-    docCheck
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          createUser(classList);
-        } else {
-          classList.remove("loading");
-          M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })
-        }
-      })
-      .catch(function (error) {
-        classList.remove("loading");
-        M.toast({ html: error.message, classes: "toast error-toast" })
-      });
-  };
-
+  // Step-1 Authenticate User
   const createUser = (classList) => {
     const auth = firebase.auth();
     auth
       .createUserWithEmailAndPassword(email, pass)
-      .then(() => {
-        classList.remove("loading");
-        M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
-        if (duplicate) {
-          classList.remove("loading");
-          M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
-          return
-        }
-        createDoc();
-        addToCRList();
+      .then((user) => {
+        user.user.updateProfile({
+          displayName: "student"
+        })
+        checkDetails(classList);
       })
       .catch((err) => {
         classList.remove("loading");
@@ -101,16 +85,57 @@ function StuSignup() {
       });
   };
 
+  // Step-2 Check Details(Class-code)
+  const checkDetails = (classList) => {
+    const docCheck = db.collection("classes").doc(code);
+    docCheck
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          doc.ref.collection("details").doc("stuList")
+            .get()
+            .then((details) => {
+              if (checkRollNo(rno, details.data().studentsList)) {
+                firebase.auth().currentUser.delete();
+                classList.remove("loading");
+                M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
+                return
+              }
+              createDoc();
+              addToCRList();
+              classList.remove("loading");
+              M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
+            })
+        } else {
+          firebase.auth().currentUser.delete();
+          classList.remove("loading");
+          M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })
+        }
+      })
+      .catch(function (error) {
+        firebase.auth().currentUser.delete();
+        classList.remove("loading");
+        M.toast({ html: error.message, classes: "toast error-toast" })
+      });
+  };
+
+  // Step-3 Create Student document
+
+  // Document to be added
+  const obj = {
+    classCode: code,
+    email,
+    name,
+    rollNo: rno,
+    verified: false,
+  };
+  //
   const createDoc = () => {
     const docRef = db.collection("students").doc(email);
     docRef.set(obj);
   };
 
-  const rollNoChange = (e) => {
-    setRno(e.target.value);
-    checkRollNo(e.target.value);
-  }
-
+  // Step-4 Add student data to class document
   const addToCRList = () => {
     const docRef = db
       .collection("classes")
@@ -122,7 +147,6 @@ function StuSignup() {
       name: obj.name,
       email: obj.email,
     };
-
     docRef.update({
       studentsList: firebase.firestore.FieldValue.arrayUnion(user)
     })
@@ -133,6 +157,8 @@ function StuSignup() {
         M.toast({ html: err.message, classes: "toast error-toast" })
       });
   };
+  // // // // // // // // // // // // 
+
 
   return (
     <div className="main-container">
@@ -188,6 +214,7 @@ function StuSignup() {
                   onChange={(e) => setPass(e.target.value)}
                   required
                 />
+                <ShowPassword />
               </div>
               <div className="con-new">
                 Already Joined? <Link to="/student/login">Log In</Link>

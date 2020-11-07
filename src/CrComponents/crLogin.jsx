@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
 import M from 'materialize-css';
-
-let db = firebase.firestore();
+import ShowPassword from "../ShowPassword";
 
 class CrLogin extends Component {
   state = {
@@ -26,25 +25,26 @@ class CrLogin extends Component {
     classList.add("loading");
     const email = this.state.email,
       pass = this.state.password;
-    db.collection("students").doc("listOfCRs").get().then((doc) => {
-      if (doc.data().listOfCRs[email]) {
-        firebase.auth().signInWithEmailAndPassword(email, pass)
-          .then(() => {
-            M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
-            classList.remove("loading");
-            window.location.pathname = "/cr"
-          })
-          .catch((err) => {
-            if (err.message === "The password is invalid or the user does not have a password.") {
-              classList.remove("loading");
-              M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-            }
-          });
-      } else {
-        classList.remove("loading");
-        M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
-      }
-    })
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then((user) => {
+        if (user.user.displayName === "cr") {
+          M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+          classList.remove("loading");
+          window.location.pathname = "/cr"
+        } else{
+          classList.remove("loading");
+          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+        }
+      })
+      .catch((err) => {
+        if (
+          err.message === "The password is invalid or the user does not have a password." ||
+          err.message === "There is no user record corresponding to this identifier. The user may have been deleted."
+        ) {
+          classList.remove("loading");
+          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+        }
+      });
   };
 
   render() {
@@ -90,6 +90,7 @@ class CrLogin extends Component {
                     onChange={this.handleChange}
                     required
                   />
+                  <ShowPassword />
                 </div>
                 <div className="con-new">
                   New here? <Link to="/newcr">Sign Up</Link>

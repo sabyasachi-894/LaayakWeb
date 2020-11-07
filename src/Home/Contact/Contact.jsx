@@ -20,7 +20,7 @@ const Contact = () => {
         {
             name: "Parv Sharma",
             github: "https://github.com/PSCoder10462",
-            linkedin: "https://www.linkedin.com/in/parv-sharma-3ba3991a1/",
+            linkedin: "https://www.linkedin.com/in/parv-sharma10462/",
             gmail: "mailto:pscoder10462@gmail.com",
             image: "https://avatars0.githubusercontent.com/u/59911189?s=460&u=aa564b3cd9c35caaf8d6442dd4482fdaa9b0ee2e&v=4"
         },
@@ -29,7 +29,7 @@ const Contact = () => {
             github: "https://github.com/Kashishjain04",
             linkedin: "https://www.linkedin.com/in/kashishjain04/",
             gmail: "mailto:jainabhishek7204@gmail.com",
-            image: "https://media-exp1.licdn.com/dms/image/C4D03AQGmJfba6MM8tA/profile-displayphoto-shrink_200_200/0?e=1607558400&v=beta&t=tt1PtERwASD3Coof32xdpogVwmK1cacGJmMESUnvyO4"
+            image: "https://media-exp1.licdn.com/dms/image/C4D03AQE4XLKG5OwFvQ/profile-displayphoto-shrink_200_200/0?e=1609977600&v=beta&t=Gog1vgLRPj8Rv9yiYpHnK52yTvGJV7BzBs64UdVm4aM"
         }
     ]
     return (

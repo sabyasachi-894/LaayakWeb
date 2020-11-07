@@ -5,28 +5,24 @@ import Loader from "../Loader/Loader";
 import { Redirect } from "react-router-dom";
 import Forbidden from "../forbidden/Forbidden";
 
-const db = firebase.firestore();
-
 class Landing extends Component {
     isMount = false
     state = {
         user: null,
-        doc: "",
+        verified: false,
         loading: true
     };
 
     authListener = () => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                const docRef = db.collection("teachers").doc(user.email);
-                docRef.get().then((doc) => {
-                    if (doc.data()) {
-                        (this.isMount) &&
-                            this.setState({
-                                doc: doc,
-                            });
+                if(user.displayName === "teacher"){
+                    if(this.isMount){
+                        this.setState({
+                            verified: true
+                        })
                     }
-                });
+                }
             }
             if (this.isMount) {
                 this.setState({ user });
@@ -47,7 +43,7 @@ class Landing extends Component {
         (this.state.loading) && (display = <Loader />)
         if (!this.state.loading) {
             if (this.state.user) {
-                if (this.state.doc) {
+                if (this.state.verified) {
                     display = <MainPage />
                 } else {
                     display = <Forbidden />
