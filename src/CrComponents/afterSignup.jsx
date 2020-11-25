@@ -13,7 +13,7 @@ class AfterSignup extends Component {
       branch: "",
       college: "",
       course: "",
-      crName: "",
+      crName: "", //username
       sem: "",
       timeTable: "Himesh set krega",
     },
@@ -59,9 +59,7 @@ class AfterSignup extends Component {
       const crRef = db.collection("cr").doc(this.state.user.email);
       crRef.onSnapshot((snap) => {
         if (snap.data()) {
-          const claRef = db
-            .collection("classes")
-            .doc(snap.data().classId);
+          const claRef = db.collection("classes").doc(snap.data().classId);
 
           claRef.get().then((doc) => {
             if (doc.exists) {
@@ -72,7 +70,7 @@ class AfterSignup extends Component {
                   classId: docRef.id,
                   email: this.state.user.email,
                   rollNo: this.state.rollNo,
-                  name: this.state.details.crName
+                  name: this.state.details.crName,
                 });
             }
           });
@@ -131,7 +129,7 @@ class AfterSignup extends Component {
                     value={this.state.rollNo}
                     required
                     // onChange={(e) => setRno(e.target.value)}
-                    onChange={(e) => this.setState({rollNo: e.target.value})}
+                    onChange={(e) => this.setState({ rollNo: e.target.value })}
                   />
                 </div>
                 <div className="con-input">
@@ -184,7 +182,11 @@ class AfterSignup extends Component {
                 </div>
               </div>
               <footer>
-                <button onClick={this.handleSubmitDetails} type="submit" className="btn-login">
+                <button
+                  onClick={this.handleSubmitDetails}
+                  type="submit"
+                  className="btn-login"
+                >
                   Submit
                 </button>
               </footer>
@@ -209,7 +211,12 @@ class AfterSignup extends Component {
     fcmRef.set({ fcmTokens: [] });
     const detailsRef = docRef.collection("details").doc("stuList");
     detailsRef.set({ studentsList: [] });
-    classList.remove("loading")
+    const crRef = db.collection("cr").doc(this.state?.user.email);
+    crRef.update({
+      name: this.state.details.crName,
+      rollNo: this.state.rollNo,
+    });
+    classList.remove("loading");
   };
 }
 

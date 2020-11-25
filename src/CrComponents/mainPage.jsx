@@ -14,6 +14,7 @@ import DarkToggle from "../DarkToggle/DarkToggle";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import M from "materialize-css";
+import AddAssign from "./addAssign";
 
 // reference to firestore
 
@@ -164,6 +165,19 @@ class MainPage extends Component {
               />
             ))
           )}
+        </div>
+        <div className="assignments">
+          <h2 className="subHeading">
+            Assignments
+            <span role="img" aria-label="assignments">
+              📝
+            </span>
+          </h2>
+          <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
+          <AddAssign
+            addLink={this.AddAnnouncement}
+            classCode={this.state.crCode}
+          />
         </div>
         {/* Announcement/polls/links */}
         <div id="Announcements">
