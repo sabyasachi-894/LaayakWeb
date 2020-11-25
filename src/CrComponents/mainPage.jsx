@@ -15,7 +15,7 @@ import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import M from "materialize-css";
 import AddAssign from "./addAssign";
-
+import ShowAssign from "./showAssign";
 // reference to firestore
 
 let db = firebase.firestore();
@@ -175,9 +175,10 @@ class MainPage extends Component {
           </h2>
           <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           <AddAssign
-            addLink={this.AddAnnouncement}
+            addAssign={this.addAssignment}
             classCode={this.state.crCode}
           />
+          <ShowAssign />
         </div>
         {/* Announcement/polls/links */}
         <div id="Announcements">
@@ -345,6 +346,12 @@ class MainPage extends Component {
     const finAnnouncements = [...this.state.announcements, newAnnouncement];
     this.docRefUp.update({
       announcements: finAnnouncements,
+    });
+  };
+
+  addAssignment = (newAssign) => {
+    this.docRefUp.update({
+      assignments: firebase.firestore.FieldValue.arrayUnion(newAssign),
     });
   };
 

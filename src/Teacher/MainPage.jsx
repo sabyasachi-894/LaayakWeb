@@ -3,13 +3,10 @@ import Details from "./Details";
 import Class from "./Class";
 import Lecture from "./Lecture";
 import AddLecture from "./AddLecture";
-// import Loader from "../Loader/Loader";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import M from "materialize-css";
-
-// reference to firestore
 
 let db = firebase.firestore();
 

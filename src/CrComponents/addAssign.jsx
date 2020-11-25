@@ -9,7 +9,6 @@ class AddAssign extends Component {
     title: "",
     fileName: "",
     assign: {},
-    isOfficial: true,
   };
 
   // toggle show state
@@ -23,22 +22,7 @@ class AddAssign extends Component {
   // modal show/hide class
   showHideClassName = () => (this.state.show ? "" : "d-none");
 
-  styles = {
-    position: "fixed",
-    background: "pink",
-    color: "black",
-    width: "60%",
-    height: "auto",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    zIndex: 1,
-    boxShadow: "2px 2px 10px 10px rgba(255, 31, 255, 0.226)",
-  };
-
   render() {
-    console.log(this.state);
-
     return (
       <div>
         <button className="btn-lg btn-info m-1" onClick={this.showModal}>
@@ -56,7 +40,7 @@ class AddAssign extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form>{this.getForm()}</form>
+            <form onSubmit={this.callAddAssign}>{this.getForm()}</form>
           </Modal.Body>
         </Modal>
       </div>
@@ -70,14 +54,13 @@ class AddAssign extends Component {
     }
   };
 
-  setUrlName = (url, fileName) => {
-    if (url && fileName) {
-      this.setState({ url, fileName });
-    }
-  };
-
   uploadAssign = () => {
     const { assign } = this.state;
+    const setUrlName = (url, fileName) => {
+      if (url && fileName) {
+        this.setState({ url, fileName });
+      }
+    };
     if (assign) {
       // create storage ref
       const storageRef = firebase
@@ -97,7 +80,7 @@ class AddAssign extends Component {
           storageRef
             .getDownloadURL()
             .then((url) => {
-              this.setUrlName(url, assign.name);
+              setUrlName(url, assign.name);
             })
             .catch((err) => console.log(err));
         }
@@ -134,6 +117,7 @@ class AddAssign extends Component {
               className="custom-file-input"
               id="inputGroupFile02"
               onChange={this.browseFile}
+              required
             />
             <label
               className="custom-file-label"
@@ -154,34 +138,40 @@ class AddAssign extends Component {
             </span>
           </div>
         </div>
-        <button className="btn btn-success m-2" onClick={this.hideModal}>
+        <button
+          className="btn btn-success m-2"
+          type="submit"
+          onClick={this.hideModal}
+        >
           Add Assignment
         </button>
       </div>
     );
   };
 
-  // callAddPoll = (e) => {
-  //   e.preventDefault(); // preventing reload
-  //   const newPoll = {
-  //     dateAndTime: firebase.firestore.Timestamp.fromDate(new Date()),
-  //     type: "poll",
-  //     text: this.state.text,
-  //     yesOption: this.state.yesOption,
-  //     noOption: this.state.noOption,
-  //     yesCount: 0,
-  //     noCount: 0,
-  //     isOfficial: this.state.isOfficial,
-  //   };
-  //   console.log(newPoll);
-  //   this.props.addPoll(newPoll);
-  //   this.setState({
-  //     text: "",
-  //     yesOption: "",
-  //     noOption: "",
-  //     isOfficial: false,
-  //   });
-  // };
+  callAddAssign = (e) => {
+    e.preventDefault(); // preventing reload
+    if (this.state.fileName) {
+      const { url, title, fileName } = this.state;
+      const newAssign = {
+        dateAndTime: firebase.firestore.Timestamp.fromDate(new Date()),
+        url: url,
+        title: title,
+        fileName: fileName,
+        isOfficial: true,
+      };
+      this.props.addAssign(newAssign);
+      this.setState({
+        url: "",
+        title: "",
+        fileName: "",
+        assign: {},
+        show: false,
+      });
+    } else {
+      alert("Please upload the file first");
+    }
+  };
 }
 
 export default AddAssign;
