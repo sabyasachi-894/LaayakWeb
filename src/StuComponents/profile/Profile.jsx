@@ -10,7 +10,7 @@ const Profile = (props) => {
                 <h2 className="subHeading">Your Details: </h2>
             </ div>
             <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-            <Details details={props.location.state.doc} />
+            <Details details={props.location.state.doc} type={props.location.state.type} />
         </div>
     );
 }

@@ -1,9 +1,17 @@
 import React, { Component } from "react";
 import Card from "./Card";
 import Contact from "./Contact/Contact";
+import firebase from '../firebase';
 
 
 class Home extends Component {
+
+  componentDidMount(){
+    firebase.firestore().collection("cr").get()
+      .then(data => {
+        console.log(data.docs);
+      }) 
+  }
 
   getHeader = () => {
     return (

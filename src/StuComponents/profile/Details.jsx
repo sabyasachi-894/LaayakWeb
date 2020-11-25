@@ -12,7 +12,11 @@ class Details extends Component {
     );
   }
   getDetails = () => {
-    const { name, email, rollNo, classCode } = this.props.details;
+    let classCode = ""
+    this.props.type === "Student" ? 
+    classCode = this.props.details :
+    classCode = this.props.details.classId
+    const { name, email, rollNo } = this.props.details;
     return (
 
       <>

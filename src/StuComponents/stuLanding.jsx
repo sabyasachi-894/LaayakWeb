@@ -32,7 +32,16 @@ class StuLanding extends Component {
         if (user.displayName === "student") {
           if (this.isMount) {
             this.setState({
-              access: true
+              access: true,
+              type: "Student"
+            })
+          }
+        }
+        if (user.displayName === "cr") {
+          if (this.isMount) {
+            this.setState({
+              access: true,
+              type: "CR"
             })
           }
         }
@@ -51,7 +60,7 @@ class StuLanding extends Component {
     var display;
     if (this.state.email) {
       this.state.access ?
-        display = <MainPage email={this.state.email} /> :
+        display = <MainPage email={this.state.email} type={this.state.type} /> :
         display = <Forbidden />
     } else {
       display = <Redirect to="/student/login" />

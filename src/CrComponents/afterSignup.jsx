@@ -17,6 +17,7 @@ class AfterSignup extends Component {
       sem: "",
       timeTable: "Himesh set krega",
     },
+    rollNo: "",
     redirect: false,
   };
 
@@ -69,6 +70,9 @@ class AfterSignup extends Component {
               if (this.isMount)
                 crRef.set({
                   classId: docRef.id,
+                  email: this.state.user.email,
+                  rollNo: this.state.rollNo,
+                  name: this.state.details.crName
                 });
             }
           });
@@ -115,6 +119,19 @@ class AfterSignup extends Component {
                     type="text"
                     onChange={this.handleChange}
                     required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="rollno">Roll Number</label>
+                  <input
+                    placeholder="Roll Number"
+                    id="rollno"
+                    name="rollNo"
+                    type="text"
+                    value={this.state.rollNo}
+                    required
+                    // onChange={(e) => setRno(e.target.value)}
+                    onChange={(e) => this.setState({rollNo: e.target.value})}
                   />
                 </div>
                 <div className="con-input">

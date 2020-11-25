@@ -26,7 +26,7 @@ class StuLogin extends Component {
         classList.add("loading");
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then((user) => {
-                if (user.user.displayName === "student") {
+                if (user.user.displayName === "student" || user.user.displayName === "cr") {
                     classList.remove("loading");
                     M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
                     window.location.pathname = "/student"

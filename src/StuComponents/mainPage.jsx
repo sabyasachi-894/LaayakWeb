@@ -26,8 +26,9 @@ class MainPage extends Component {
     announcements: [],
     loading: true,
   };
+  type = this.props.type  
   stuDocRef = db.collection("students").doc(this.props.email);
-
+  crDocRef = db.collection("cr").doc(this.props.email);
   fetchClassDetails = () => {
     db.collection("classes")
       .doc(this.state.classCode)
@@ -73,19 +74,34 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-    this.stuDocRef.get().then((doc) => {
-      if (doc.exists) {
-        this.setState({
-          stuDoc: doc.data(),
-          classCode: doc.data().classCode,
-        });
-        if (doc.data().classCode) {
-          this.fetchClassDetails();
+    console.log(this.props.type)
+    this.props.type === "Student" ? 
+      this.stuDocRef.get().then((doc) => {
+        if (doc.exists) {
+          this.setState({
+            stuDoc: doc.data(),
+            classCode: doc.data().classCode,
+          });
+          if (doc.data().classCode) {
+            this.fetchClassDetails();
+          }
+        } else {
+          this.setState({ loading: false });
         }
-      } else {
-        this.setState({ loading: false });
-      }
-    });
+      }) :
+      this.crDocRef.get().then((doc) => {
+        if (doc.exists) {
+          this.setState({
+            stuDoc: doc.data(),
+            classCode: doc.data().classId,
+          });
+          if (doc.data().classId) {
+            this.fetchClassDetails();
+          }
+        } else {
+          this.setState({ loading: false });
+        }
+      })
   }
 
   handleSignOut = () => {
@@ -121,7 +137,7 @@ class MainPage extends Component {
               <Link
                 to={{
                   pathname: "/student/profile",
-                  state: { doc: this.state.stuDoc },
+                  state: { doc: this.state.stuDoc, type: this.props.type },
                 }}
                 style={{ textDecoration: "none" }}
               >
