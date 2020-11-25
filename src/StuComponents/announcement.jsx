@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const months = [
+export const months = [
   "Jan",
   "Feb",
   "Mar",

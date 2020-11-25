@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
 import Modal from "react-bootstrap/Modal";
+import M from "materialize-css";
 
 class AddAssign extends Component {
   state = {
@@ -141,7 +142,7 @@ class AddAssign extends Component {
         <button
           className="btn btn-success m-2"
           type="submit"
-          onClick={this.hideModal}
+          // onClick={this.hideModal}
         >
           Add Assignment
         </button>
@@ -168,8 +169,9 @@ class AddAssign extends Component {
         assign: {},
         show: false,
       });
+      this.hideModal();
     } else {
-      alert("Please upload the file first");
+      M.toast({ html: "Please upload file first", classes: "toast error-toast" })
     }
   };
 }

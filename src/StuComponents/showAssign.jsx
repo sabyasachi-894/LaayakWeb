@@ -29,15 +29,7 @@ class ShowAssign extends Component {
             target="_blank"
             rel="noopener noreferrer" >
             View File
-              </a>
-          <div style={{ position: "absolute", top: "5%", right: "1%" }}>
-            <button
-              className="btn"
-            onClick={() => this.props.onDelete(this.props.details)}
-            >
-              <span role="img" aria-label="delete">❌</span>
-            </button>
-          </div>
+              </a>          
         </div>
       </>
     );
