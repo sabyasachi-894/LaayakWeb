@@ -8,6 +8,8 @@ import firebase from "../firebase";
 import { Link } from 'react-router-dom';
 import BottomNav from '../BottomNav/bnav';
 import DarkToggle from "../DarkToggle/DarkToggle"
+import AddAssign from './addAssign';
+import ShowAssign from './showAssign';
 let db = firebase.firestore();
 
 
@@ -16,6 +18,7 @@ class classDetails extends Component {
   state = {
     details: [],
     announcements: [],
+    assignments: [],
     classId: this.props.location.state.classId
   };
 
@@ -37,6 +40,11 @@ class classDetails extends Component {
     });
     this.docRefUp.onSnapshot((doc) => {
       if (doc.data()) {
+        if(this.isMount){
+          this.setState({
+            assignments: doc.data().assignments
+          })
+        }
         doc.data().announcements.forEach((announcement) => {
           if (announcement.isOfficial) {
             if (this.isMount) {
@@ -47,6 +55,7 @@ class classDetails extends Component {
           }
         });
         this.sortAnnouncements();
+        this.sortAssignments();
       }
     });
   }
@@ -68,8 +77,33 @@ class classDetails extends Component {
         {/* semester details */}
         <h2 id="Details" className="subHeading">Info: </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
+        {/* Assignments */}
+        <div id="Assignments">
+          <h2 className="subHeading">
+            Assignments
+            <span role="img" aria-label="assignments">
+              📝
+            </span>
+          </h2>
+          <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
+          <AddAssign
+            addAssign={this.addAssignment}
+            classCode={this.state.crCode}
+          />
+          {this.state.assignments.length ?
+            this.state.assignments.map((assignment) => (
+              <ShowAssign
+                key={assignment.url}
+                onDelete={this.deleteAssignment}
+                details={assignment}
+              />
+            )) :
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No Assignments pending for the class
+            </h4>
+          }
+        </div>
         {/* Announcement/polls/links */}
         <div id="Announcements">
           <div className="d-inline container-fluid">
@@ -129,6 +163,21 @@ class classDetails extends Component {
       announcements: temp,
     });
   };
+  sortAssignments = () => {
+    let temp = this.state.assignments;
+    for (let i = 0; i < temp.length; i++) {
+      for (let j = i + 1; j < temp.length; j++) {
+        if (temp[i].dateAndTime < temp[j].dateAndTime) {
+          let x = temp[i];
+          temp[i] = temp[j];
+          temp[j] = x;
+        }
+      }
+    }
+    this.setState({
+      assignments: temp,
+    });
+  };
   AddAnnouncement = (newAnnouncement) => {
     this.docRefUp.update({
       announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
@@ -145,5 +194,23 @@ class classDetails extends Component {
       announcements: []
     })
   };
+  addAssignment = (newAssign) => {
+    this.docRefUp.update({
+      assignments: firebase.firestore.FieldValue.arrayUnion(newAssign),
+    });
+  }
+  deleteAssignment = (assign) => {
+    const fileRef = firebase
+      .storage()
+      .ref(`assignment/${this.state.crCode}/${assign.fileName}`);
+    fileRef
+      .delete()
+      .then(() => {
+        alert("Deleted Successfully")
+      })
+    this.docRefUp.update({
+      assignments: firebase.firestore.FieldValue.arrayRemove(assign),
+    });
+  }
 }
 export default classDetails;

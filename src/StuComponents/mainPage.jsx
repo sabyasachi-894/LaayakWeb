@@ -73,6 +73,7 @@ class MainPage extends Component {
             }),
           });
           this.sortAnnouncements();
+          this.sortAssignments();
         }
       });
   };
@@ -301,6 +302,21 @@ class MainPage extends Component {
     }
     this.setState({
       announcements: temp,
+    });
+  };
+  sortAssignments = () => {
+    let temp = this.state.assignments;
+    for (let i = 0; i < temp.length; i++) {
+      for (let j = i + 1; j < temp.length; j++) {
+        if (temp[i].dateAndTime < temp[j].dateAndTime) {
+          let x = temp[i];
+          temp[i] = temp[j];
+          temp[j] = x;
+        }
+      }
+    }
+    this.setState({
+      assignments: temp,
     });
   };
 }
