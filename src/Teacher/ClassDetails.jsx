@@ -89,7 +89,7 @@ class classDetails extends Component {
           <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           <AddAssign
             addAssign={this.addAssignment}
-            classCode={this.state.crCode}
+            classCode={this.state.classId}
           />
           {this.state.assignments.length ?
             this.state.assignments.map((assignment) => (
@@ -142,7 +142,7 @@ class classDetails extends Component {
           ))}
         </div>
         <BottomNav
-          paths={["Details", "Announcements"]}
+          paths={["Details", "Assignments", "Announcements"]}
         />
       </div>
 
@@ -202,7 +202,7 @@ class classDetails extends Component {
   deleteAssignment = (assign) => {
     const fileRef = firebase
       .storage()
-      .ref(`assignment/${this.state.crCode}/${assign.fileName}`);
+      .ref(`assignment/${this.state.classId}/${assign.fileName}`);
     fileRef
       .delete()
       .then(() => {

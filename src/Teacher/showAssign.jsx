@@ -4,6 +4,23 @@ import { months } from "./Announcement";
 class ShowAssign extends Component {
   state = {};
 
+  download = (url) => {
+    var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0].split("%2F")[2];
+    filename = decodeURIComponent(filename);
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+      var a = document.createElement('a');
+      a.href = window.URL.createObjectURL(xhr.response);
+      a.download = filename; // Name the file anything you'd like.
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+    };
+    xhr.open('GET', url);
+    xhr.send();
+  }
+
   displayAssignment = () => {
     const { dateAndTime, title, url } = this.props.details;
     let dateTime = dateAndTime.toDate();
@@ -23,13 +40,12 @@ class ShowAssign extends Component {
         <div className="ann-info text-left">
           <h6 style={{ width: "fit-content" }} className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
           <h4>{title}</h4>
-          <a
+          <span
+            onClick={() => this.download(url)}
             className="btn link-btn btn-primary mt-2 float-right"
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer" >
-            View File
-              </a>
+          >
+            Download File
+              </span>
           <div style={{ position: "absolute", top: "5%", right: "1%" }}>
             <button
               className="btn"

@@ -6,6 +6,7 @@ import "./assets/css/about.css";
 import "./assets/css/Login.css";
 import "./assets/css/mainPage.css";
 import "./assets/css/loadingButton.css";
+import "./assets/css/fileInput.css";
 import MainNavBar from "./NavBar/mainNavBar";
 import Loader from "./Loader/Loader";
 

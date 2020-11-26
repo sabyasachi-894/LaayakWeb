@@ -10,6 +10,7 @@ class AddAssign extends Component {
     title: "",
     fileName: "",
     assign: {},
+    progress: 0
   };
 
   // toggle show state
@@ -55,14 +56,20 @@ class AddAssign extends Component {
     }
   };
 
-  uploadAssign = () => {
+  uploadAssign = () => {    
     const { assign } = this.state;
     const setUrlName = (url, fileName) => {
       if (url && fileName) {
         this.setState({ url, fileName });
       }
     };
-    if (assign) {
+    const setProgress = (progress) => {
+      if(progress){
+        this.setState({progress})
+      }
+    }
+    if (assign.name) {
+      document.getElementById("progress").classList.remove("hide");
       // create storage ref
       const storageRef = firebase
         .storage()
@@ -74,10 +81,14 @@ class AddAssign extends Component {
       // update progress bar
       task.on(
         "state_changed",
-        function progress(snapshot) {},
-        function error(err) {},
+        function progress(snapshot) {
+          const progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+          console.log(progress);
+          setProgress(progress)
+         },
+        function error(err) { },
         function complete() {
-          alert("File uploaded successfully!");
+          M.toast({ html: "Uploaded Successfully", classes: "toast success-toast" })
           storageRef
             .getDownloadURL()
             .then((url) => {
@@ -129,6 +140,14 @@ class AddAssign extends Component {
             </label>
           </div>
           <div className="input-group-append">
+            {/* <button 
+              onClick={this.uploadAssign}
+              className="send"
+            >
+              <div className="text">UPLOAD</div>
+              <div className="loader"></div>
+              <div className="done">SUCCESS</div>
+            </button> */}
             <span
               className="input-group-text"
               id="inputGroupFileAddon02"
@@ -138,11 +157,14 @@ class AddAssign extends Component {
               Upload
             </span>
           </div>
+          <div className="input-group">
+            <progress id="progress" className="custom-progress-bar hide" value={this.state.progress} max="100"> </progress>            
+          </div>
         </div>
         <button
           className="btn btn-success m-2"
           type="submit"
-          // onClick={this.hideModal}
+        // onClick={this.hideModal}
         >
           Add Assignment
         </button>
@@ -162,11 +184,13 @@ class AddAssign extends Component {
         isOfficial: true,
       };
       this.props.addAssign(newAssign);
+      document.getElementById("progress").classList.add("hide")
       this.setState({
         url: "",
         title: "",
         fileName: "",
         assign: {},
+        progress: 0,
         show: false,
       });
       this.hideModal();

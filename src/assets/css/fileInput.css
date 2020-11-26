@@ -1,0 +1,9 @@
+.custom-progress-bar {    
+    width: 100%;
+    margin: 10px 0;
+    height: 25px
+}
+
+.custom-progress-bar.hide {
+    display: none;
+}

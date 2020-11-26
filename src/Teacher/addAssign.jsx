@@ -9,6 +9,7 @@ class AddAssign extends Component {
     url: "",
     title: "",
     fileName: "",
+    progress: 0,
     assign: {},
   };
 
@@ -62,7 +63,13 @@ class AddAssign extends Component {
         this.setState({ url, fileName });
       }
     };
-    if (assign) {
+    const setProgress = (progress) => {
+      if(progress) {
+        this.setState({progress})
+      }
+    }
+    if (assign.name) {
+      document.getElementById("progress").classList.remove("hide");
       // create storage ref
       const storageRef = firebase
         .storage()
@@ -74,10 +81,13 @@ class AddAssign extends Component {
       // update progress bar
       task.on(
         "state_changed",
-        function progress(snapshot) { },
+        function progress(snapshot) {
+          const progress = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+          setProgress(progress);
+         },
         function error(err) { },
         function complete() {
-          alert("File uploaded successfully!");
+          M.toast({ html: "Uploaded Successfully", classes: "toast success-toast" })
           storageRef
             .getDownloadURL()
             .then((url) => {
@@ -137,6 +147,9 @@ class AddAssign extends Component {
             >
               Upload
             </span>
+          </div>
+          <div className="input-group">
+            <progress id="progress" className="custom-progress-bar hide" value={this.state.progress} max="100"> </progress>            
           </div>
         </div>
         <button
