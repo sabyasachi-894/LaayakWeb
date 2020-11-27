@@ -34,10 +34,10 @@ class MainPage extends Component {
 
   collRef = db.collection("classes");
   docRef = this.collRef.doc(this.state.crCode);
-  collRefLec = this.docRef.collection("lectures");
-  docRefLec = this.collRefLec.doc("lecturesToday");
-  collRefUp = this.docRef.collection("updates");
-  docRefUp = this.collRefUp.doc("announcements");
+  collRefLec = this.docRef?.collection("lectures");
+  docRefLec = this.collRefLec?.doc("lecturesToday");
+  collRefUp = this.docRef?.collection("updates");
+  docRefUp = this.collRefUp?.doc("announcements");
 
   handleSignOut = () => {
     firebase
@@ -54,6 +54,7 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
+    // this.setState({ crCode: this.props.CrCode });
     this.docRef.onSnapshot((doc) => {
       if (doc.data()) {
         this.setState({
@@ -105,189 +106,192 @@ class MainPage extends Component {
     const display = this.state.loading ? (
       <Loader />
     ) : (
-        <div className="container-fluid">
-          <div className="code-head-btn">
-            <DarkToggle />
-            <h1 className="mainPageHeading">CR Control Page!</h1>
+      <div className="container-fluid">
+        <div className="code-head-btn">
+          <DarkToggle />
+          <h1 className="mainPageHeading">CR Control Page!</h1>
 
-            <Dropdown className="float-md-right mb-2">
-              <Dropdown.Toggle className="acc-dropdown" id="dropdown-basic">
+          <Dropdown className="float-md-right mb-2">
+            <Dropdown.Toggle className="acc-dropdown" id="dropdown-basic">
+              <i
+                className="fa fa-user-circle"
+                style={{ fontSize: "30px", cursor: "pointer" }}
+              />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="cr-profile-dropdown">
+              <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
+              <Dropdown.Item onClick={this.copyLink}>
+                {" "}
+                {this.state.crCode}{" "}
+              </Dropdown.Item>
+              <Link
+                to={{
+                  pathname: "/cr/class",
+                  state: {
+                    classId: this.state.crCode,
+                    details: this.state.details,
+                  },
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                <Dropdown.Item href="/cr/class">Class Details</Dropdown.Item>
+              </Link>
+
+              <Dropdown.Divider />
+              <Dropdown.Item onClick={() => this.handleSignOut()}>
                 <i
-                  className="fa fa-user-circle"
-                  style={{ fontSize: "30px", cursor: "pointer" }}
+                  style={{ fontSize: "25px", cursor: "pointer" }}
+                  className="fa fa-sign-out"
                 />
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu className="cr-profile-dropdown">
-                <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
-                <Dropdown.Item onClick={this.copyLink}>
-                  {" "}
-                  {this.state.crCode}{" "}
-                </Dropdown.Item>
-                <Link
-                  to={{
-                    pathname: "/cr/class",
-                    state: {
-                      classId: this.state.crCode,
-                      details: this.state.details,
-                    },
-                  }}
-                  style={{ textDecoration: "none" }}
-                >
-                  <Dropdown.Item href="/cr/class">Class Details</Dropdown.Item>
-                </Link>
-
-                <Dropdown.Divider />
-                <Dropdown.Item onClick={() => this.handleSignOut()}>
-                  <i
-                    style={{ fontSize: "25px", cursor: "pointer" }}
-                    className="fa fa-sign-out"
-                  />
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          {/* lectures on the day */}
-          <div id="Lectures">
-            <h2 className="subHeading">Lectures Today:</h2>
-          </div>
-          <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-          <AddLecture
-            addLecture={this.addLecture}
-            subjects={this.state.subjects}
-          />
-          <div className="lectures-row">
-            {this.state.lecturesToday.length === 0 ? (
-              <h4 style={{ textAlign: "center", width: "100%" }}>
-                No lectures for the day! Let students enjoy
-              </h4>
-            ) : (
-                this.state.lecturesToday.map((lecture) => (
-                  <Lecture
-                    lecture={lecture}
-                    key={lecture.startTime}
-                    onDelete={this.deleteLecture}
-                  />
-                ))
-              )}
-          </div>
-          <div id="Assignments">
-            <h2 className="subHeading">
-              Assignments
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        {/* lectures on the day */}
+        <div id="Lectures">
+          <h2 className="subHeading">Lectures Today:</h2>
+        </div>
+        <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
+        <AddLecture
+          addLecture={this.addLecture}
+          subjects={this.state.subjects}
+        />
+        <div className="lectures-row">
+          {this.state.lecturesToday.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No lectures for the day! Let students enjoy
+            </h4>
+          ) : (
+            this.state.lecturesToday.map((lecture) => (
+              <Lecture
+                lecture={lecture}
+                key={lecture.startTime}
+                onDelete={this.deleteLecture}
+              />
+            ))
+          )}
+        </div>
+        <div id="Assignments">
+          <h2 className="subHeading">
+            Assignments
             <span role="img" aria-label="assignments">
-                📝
+              📝
             </span>
+          </h2>
+          <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
+          <AddAssign
+            addAssign={this.addAssignment}
+            classCode={this.state.crCode}
+          />
+          {this.state.assignments.length ? (
+            this.state.assignments.map((assignment) => (
+              <ShowAssign
+                key={assignment.url}
+                onDelete={this.deleteAssignment}
+                details={assignment}
+              />
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No Assignments pending for the class
+            </h4>
+          )}
+        </div>
+        {/* Announcement/polls/links */}
+        <div id="Announcements">
+          <div className="d-inline container-fluid">
+            <h2 className="subHeading">
+              Mitron! Announcement Suno{" "}
+              <span role="img" aria-label="announcement">
+                📢
+              </span>
             </h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
-            <AddAssign
-              addAssign={this.addAssignment}
-              classCode={this.state.crCode}
-            />
-            {this.state.assignments.length ?
-              this.state.assignments.map((assignment) => (
-                <ShowAssign
-                  key={assignment.url}
-                  onDelete={this.deleteAssignment}
-                  details={assignment}
-                />
-              )) :
-              <h4 style={{ textAlign: "center", width: "100%" }}>
-                No Assignments pending for the class
-            </h4>
-            }
           </div>
-          {/* Announcement/polls/links */}
-          <div id="Announcements">
-            <div className="d-inline container-fluid">
-              <h2 className="subHeading">
-                Mitron! Announcement Suno{" "}
-                <span role="img" aria-label="announcement">
-                  📢
-              </span>
-              </h2>
-              <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
-            </div>
 
-            <div className="d-flex justify-content-center mb-4">
-              <AddAnnouncement AddAnnouncement={this.AddAnnouncement} />
-              <AddPoll addPoll={this.AddAnnouncement} />
-              <AddLink addLink={this.AddAnnouncement} />
-            </div>
+          <div className="d-flex justify-content-center mb-4">
+            <AddAnnouncement AddAnnouncement={this.AddAnnouncement} />
+            <AddPoll addPoll={this.AddAnnouncement} />
+            <AddLink addLink={this.AddAnnouncement} />
+          </div>
 
-            <div className="key-container">
-              <div className="poll-card m-2" style={{ width: "90px" }}>
-                <span className="p-2">
-                  <i className="fa fa-bookmark text-danger mr-1" /> Official
+          <div className="key-container">
+            <div className="poll-card m-2" style={{ width: "90px" }}>
+              <span className="p-2">
+                <i className="fa fa-bookmark text-danger mr-1" /> Official
               </span>
-              </div>
-              <div className="poll-card m-2" style={{ width: "150px" }}>
-                <span className="p-2">
-                  <span role="img" className="mr-1" aria-label="announcement">
-                    📢{" "}
-                  </span>{" "}
+            </div>
+            <div className="poll-card m-2" style={{ width: "150px" }}>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  📢{" "}
+                </span>{" "}
                 Announcements
               </span>
-              </div>
-              <div className="poll-card m-2" style={{ width: "75px" }}>
-                <span className="p-2">
-                  <span role="img" className="mr-1" aria-label="announcement">
-                    🔗
+            </div>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🔗
                 </span>
                 Links
               </span>
-              </div>
-              <div className="poll-card m-2" style={{ width: "75px" }}>
-                <span className="p-2">
-                  <span role="img" className="mr-1" aria-label="announcement">
-                    🗳️
+            </div>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🗳️
                 </span>
                 Polls
               </span>
-              </div>
             </div>
           </div>
-          <div className="m-4 mx-n3 ann-container">
-            {this.state.announcements.length !== 0 ? (
-              this.state.announcements.map((announcement) => (
-                <Announcement
-                  announcement={announcement}
-                  id={announcement.dateAndTime}
-                  key={announcement.dateAndTime}
-                  onDelete={this.deleteAnnouncement}
-                />
-              ))
-            ) : (
-                <h4 style={{ textAlign: "center", width: "100%" }}>
-                  You can add any important announcements, polls or links for the
-                  class
-                </h4>
-              )}
-          </div>
-          {/* list of subjects */}
-          <div id="Subjects">
-            <h2 className="subHeading">Subjects You study:</h2>
-          </div>
-          <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-          {/* button to add a new subject */}
-          <AddSubject addSubject={this.addSubject} />
-          <div className="my-flex-container">
-            {this.state.subjects.length === 0 ? (
-              <h4 style={{ textAlign: "center", width: "100%" }}>
-                Please add the subjects of corresponding semester
-              </h4>
-            ) : (
-                this.state.subjects.map((subject) => (
-                  <Subject
-                    subject={subject}
-                    key={subject.subjectCode}
-                    onDelete={this.deleteSubject}
-                  />
-                ))
-              )}
-          </div>
-          <BottomNav paths={["Lectures", "Assignments", "Announcements", "Subjects"]} />
         </div>
-      );
+        <div className="m-4 mx-n3 ann-container">
+          {this.state.announcements.length !== 0 ? (
+            this.state.announcements.map((announcement) => (
+              <Announcement
+                announcement={announcement}
+                id={announcement.dateAndTime}
+                key={announcement.dateAndTime}
+                onDelete={this.deleteAnnouncement}
+              />
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              You can add any important announcements, polls or links for the
+              class
+            </h4>
+          )}
+        </div>
+        {/* list of subjects */}
+        <div id="Subjects">
+          <h2 className="subHeading">Subjects You study:</h2>
+        </div>
+        <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
+        {/* button to add a new subject */}
+        <AddSubject addSubject={this.addSubject} />
+        <div className="my-flex-container">
+          {this.state.subjects.length === 0 ? (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              Please add the subjects of corresponding semester
+            </h4>
+          ) : (
+            this.state.subjects.map((subject) => (
+              <Subject
+                subject={subject}
+                key={subject.subjectCode}
+                onDelete={this.deleteSubject}
+              />
+            ))
+          )}
+        </div>
+        <BottomNav
+          paths={["Lectures", "Assignments", "Announcements", "Subjects"]}
+        />
+      </div>
+    );
     return display;
   }
   // Sort Announcements
@@ -387,7 +391,7 @@ class MainPage extends Component {
   };
 
   // All update/edit functions
-  handleDetailsEdit = () => { };
+  handleDetailsEdit = () => {};
 
   // All delete functions
   deleteAnnouncement = (dateAndTime) => {
@@ -432,15 +436,13 @@ class MainPage extends Component {
     const fileRef = firebase
       .storage()
       .ref(`assignment/${this.state.crCode}/${assign.fileName}`);
-    fileRef
-      .delete()
-      .then(() => {
-        alert("Deleted Successfully")
-      })
+    fileRef.delete().then(() => {
+      alert("Deleted Successfully");
+    });
     this.docRefUp.update({
       assignments: firebase.firestore.FieldValue.arrayRemove(assign),
     });
-  }
+  };
 
   deleteLecture = (lecture) => {
     this.docRefLec.update({

@@ -65,19 +65,19 @@ class AfterSignup extends Component {
             if (doc.exists) {
               if (this.isMount) this.setState({ redirect: true });
             } else {
-              if (this.isMount)
-                crRef.set({
-                  classId: docRef.id,
-                  email: this.state.user.email,
-                  rollNo: this.state.rollNo,
-                  name: this.state.details.crName,
-                });
+              // if (this.isMount)
+              // crRef.set({
+              //   classId: docRef.id,
+              //   email: this.state.user.email,
+              //   rollNo: this.state.rollNo,
+              //   name: this.state.details.crName,
+              // });
             }
           });
         } else {
-          crRef.set({
-            classId: docRef.id,
-          });
+          // crRef.set({
+          //   classId: docRef.id,
+          // });
         }
       });
     }
@@ -201,22 +201,34 @@ class AfterSignup extends Component {
     this.setState({
       redirect: true,
     });
-    const obj = { details: this.state.details, subjects: [] };
+    const obj = {
+      details: this.state.details,
+      subjects: [],
+      crDetails: {
+        name: this.state.details.crName,
+        rollNo: this.state.rollNo,
+        classId: docRef.id,
+        email: this.state.user?.email,
+      },
+    };
     docRef.set(obj);
     const upRef = docRef.collection("updates").doc("announcements");
-    upRef.set({ announcements: [] });
+    upRef.set({ announcements: [], assignments: [] });
     const lecRef = docRef.collection("lectures").doc("lecturesToday");
     lecRef.set({ lectures: [] });
     const fcmRef = docRef.collection("fcmTokens").doc("fcmTokens");
     fcmRef.set({ fcmTokens: [] });
     const detailsRef = docRef.collection("details").doc("stuList");
     detailsRef.set({ studentsList: [] });
-    const crRef = db.collection("cr").doc(this.state?.user.email);
-    crRef.update({
-      name: this.state.details.crName,
-      rollNo: this.state.rollNo,
-    });
+    // const crRef = db.collection("cr").doc(this.state?.user.email);
+    // crRef.update({
+    //   name: this.state.details.crName,
+    //   rollNo: this.state.rollNo,
+    // });
     classList.remove("loading");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 }
 
