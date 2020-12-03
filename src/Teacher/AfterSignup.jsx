@@ -33,7 +33,7 @@ class AfterSignup extends Component {
   handleSubmitDetails = (e) => {
     e.preventDefault();
     auth.currentUser.delete();
-    // this.addDoc();
+    this.addDoc();
   };
 
   handleDetailsChange = (e) => {

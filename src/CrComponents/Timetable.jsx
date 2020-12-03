@@ -49,10 +49,14 @@ class Timetable extends Component {
 
   browseFile = (e) => {
     const tt = e.target.files[0];
-    if (tt) {
+    if (tt && tt.type.split("/")[0] === "image") {
       this.setState({ tt });
+    } else {
+      M.toast({
+        html: "Please select a valid image",
+        classes: "toast error-toast",
+      });
     }
-    console.log(e.target.files[0]);
   };
 
   uploadtt = (e) => {

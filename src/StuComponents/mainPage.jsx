@@ -27,8 +27,9 @@ class MainPage extends Component {
     announcements: [],
     assignments: [],
     loading: true,
+    tt: "",
   };
-  type = this.props.type  
+  type = this.props.type;
   stuDocRef = db.collection("students").doc(this.props.email);
   crDocRef = db.collection("cr").doc(this.props.email);
   fetchClassDetails = () => {
@@ -42,6 +43,7 @@ class MainPage extends Component {
             }),
             details: doc.data().details,
             loading: false,
+            tt: doc.data().timeTable,
           });
         }
       });
@@ -80,33 +82,33 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-    this.props.type === "Student" ? 
-      this.stuDocRef.get().then((doc) => {
-        if (doc.exists) {
-          this.setState({
-            stuDoc: doc.data(),
-            classCode: doc.data().classCode,
-          });
-          if (doc.data().classCode) {
-            this.fetchClassDetails();
+    this.props.type === "Student"
+      ? this.stuDocRef.get().then((doc) => {
+          if (doc.exists) {
+            this.setState({
+              stuDoc: doc.data(),
+              classCode: doc.data().classCode,
+            });
+            if (doc.data().classCode) {
+              this.fetchClassDetails();
+            }
+          } else {
+            this.setState({ loading: false });
           }
-        } else {
-          this.setState({ loading: false });
-        }
-      }) :
-      this.crDocRef.get().then((doc) => {
-        if (doc.exists) {
-          this.setState({
-            stuDoc: doc.data(),
-            classCode: doc.data().classId,
-          });
-          if (doc.data().classId) {
-            this.fetchClassDetails();
+        })
+      : this.crDocRef.get().then((doc) => {
+          if (doc.exists) {
+            this.setState({
+              stuDoc: doc.data(),
+              classCode: doc.data().classId,
+            });
+            if (doc.data().classId) {
+              this.fetchClassDetails();
+            }
+          } else {
+            this.setState({ loading: false });
           }
-        } else {
-          this.setState({ loading: false });
-        }
-      })
+        });
   }
 
   handleSignOut = () => {
@@ -142,7 +144,11 @@ class MainPage extends Component {
               <Link
                 to={{
                   pathname: "/student/profile",
-                  state: { doc: this.state.stuDoc, type: this.props.type },
+                  state: {
+                    doc: this.state.stuDoc,
+                    type: this.props.type,
+                    tt: this.state.tt,
+                  },
                 }}
                 style={{ textDecoration: "none" }}
               >
@@ -183,26 +189,27 @@ class MainPage extends Component {
           )}
         </div>
         <div id="Assignments">
-            <h2 className="subHeading">
-              Assignments
+          <h2 className="subHeading">
+            Assignments
             <span role="img" aria-label="assignments">
-                📝
+              📝
             </span>
-            </h2>
-            <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />            
-            {this.state.assignments.length ?
-              this.state.assignments.map((assignment) => (
-                <ShowAssign
-                  key={assignment.url}
-                  onDelete={this.deleteAssignment}
-                  details={assignment}
-                />
-              )) :
-              <h4 style={{ textAlign: "center", width: "100%" }}>
-                No Assignments pending for the class
+          </h2>
+          <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
+          {this.state.assignments.length ? (
+            this.state.assignments.map((assignment) => (
+              <ShowAssign
+                key={assignment.url}
+                onDelete={this.deleteAssignment}
+                details={assignment}
+              />
+            ))
+          ) : (
+            <h4 style={{ textAlign: "center", width: "100%" }}>
+              No Assignments pending for the class
             </h4>
-            }
-          </div>
+          )}
+        </div>
 
         {/* Announcement/polls/links */}
         <div id="Announcements">
@@ -282,7 +289,15 @@ class MainPage extends Component {
           )}
         </div>
 
-        <BottomNav paths={["Class", "Assignments", "Lectures", "Announcements", "Subjects"]} />
+        <BottomNav
+          paths={[
+            "Class",
+            "Assignments",
+            "Lectures",
+            "Announcements",
+            "Subjects",
+          ]}
+        />
       </div>
     );
     return this.state.classCode !== " " ? display : <h1>Join Your Friends</h1>;

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./main.css";
 import "./script";
 import { Link } from "react-router-dom";
+import logo from "./logo.png";
 
 class MainNavBar extends Component {
   state = {};
@@ -15,7 +16,7 @@ class MainNavBar extends Component {
         </div>
 
         <div className="brand">
-          <img src="./logo.png" alt="LAAYAK" className="logo" />
+          <img src={logo} alt="LAAYAK" className="logo" />
           <li>LaayaK</li>
         </div>
         <ul className="nav-links">
