@@ -129,6 +129,7 @@ class MainPage extends Component {
                 to={{
                   pathname: "/cr/class",
                   state: {
+                    email: this.state.user.email,
                     classId: this.state.crCode,
                     details: this.state.details,
                   },

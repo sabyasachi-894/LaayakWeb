@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import PrintStu from "./PrintStu";
 import firebase from "../firebase";
 import { Table } from "react-bootstrap";
+import PrintCR from "./PrintCR";
 
 const db = firebase.firestore();
 
-function StuList({ code }) {
+function StuList({ code, crEmail }) {
   const style = { border: "1px solid black", padding: 3 };
 
   const [stu, setStu] = useState([]);
@@ -40,15 +41,19 @@ function StuList({ code }) {
             </tr>
           </thead>
           <tbody>
-            {stu.map((student) => (
-              <PrintStu
-                student={student}
-                style={style}
-                key={student.rollNo}
-                stuList={stu}
-                code={code}
-              />
-            ))}
+            {stu.map((student) =>
+              student.email === crEmail ? (
+                <PrintCR key="cr" student={student} />
+              ) : (
+                <PrintStu
+                  student={student}
+                  style={style}
+                  key={student.rollNo}
+                  stuList={stu}
+                  code={code}
+                />
+              )
+            )}
           </tbody>
         </Table>
       </div>

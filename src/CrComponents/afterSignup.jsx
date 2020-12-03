@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 const db = firebase.firestore(),
   auth = firebase.auth();
 
-let docRef = db.collection("classes").doc();
+let docRef = db.collection("classes");
 
 class AfterSignup extends Component {
   isMount = false;
@@ -31,7 +31,7 @@ class AfterSignup extends Component {
               user,
               forgery: false,
             });
-            this.addDoc();
+            // this.addDoc();
           } else {
             this.setState({ forgery: true });
           }
@@ -55,7 +55,7 @@ class AfterSignup extends Component {
   };
 
   addDoc = () => {
-    if (this.state.user) {
+    if (this.state.user?.displayName === "cr") {
       const crRef = db.collection("cr").doc(this.state.user.email);
       crRef.onSnapshot((snap) => {
         if (snap.data()) {
@@ -96,7 +96,9 @@ class AfterSignup extends Component {
     e.preventDefault();
     const classList = e.target.classList;
     classList.add("loading");
-    this.initAll(classList);
+    if (this.state.user?.displayName === "cr") {
+      this.initAll(classList);
+    }
   };
 
   getDetails = () => {
@@ -211,15 +213,24 @@ class AfterSignup extends Component {
         email: this.state.user?.email,
       },
     };
-    docRef.set(obj);
-    const upRef = docRef.collection("updates").doc("announcements");
-    upRef.set({ announcements: [], assignments: [] });
-    const lecRef = docRef.collection("lectures").doc("lecturesToday");
-    lecRef.set({ lectures: [] });
-    const fcmRef = docRef.collection("fcmTokens").doc("fcmTokens");
-    fcmRef.set({ fcmTokens: [] });
-    const detailsRef = docRef.collection("details").doc("stuList");
-    detailsRef.set({ studentsList: [] });
+    docRef.add(obj).then((doc) => {
+      const upRef = doc.collection("updates").doc("announcements");
+      upRef.set({ announcements: [], assignments: [] });
+      const lecRef = doc.collection("lectures").doc("lecturesToday");
+      lecRef.set({ lectures: [] });
+      const fcmRef = doc.collection("fcmTokens").doc("fcmTokens");
+      fcmRef.set({ fcmTokens: [] });
+      const detailsRef = doc.collection("details").doc("stuList");
+      detailsRef.set({
+        studentsList: [
+          {
+            rollNo: obj.crDetails.rollNo,
+            name: obj.crDetails.name,
+            email: obj.crDetails.email,
+          },
+        ],
+      });
+    });
     // const crRef = db.collection("cr").doc(this.state?.user.email);
     // crRef.update({
     //   name: this.state.details.crName,

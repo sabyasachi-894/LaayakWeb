@@ -1,10 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import DarkToggle from '../../DarkToggle/DarkToggle';
 import Details from './Details';
 
 const Profile = (props) => {
-    console.log(props.location.state.doc);
     return (
-        <div>
+        <div className="container-fluid">
+            <div className="code-head-btn">
+                <DarkToggle />
+                <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
+                    Class Details
+                </h1>
+                <Link className="float-md-right mb-2 mr-2" to="/student">
+                    <i className="fa fa-home" style={{ fontSize: "30px", color: "#000" }}></i>
+                </Link>
+            </div>
             {/* student details */}
             < div id="Details" >
                 <h2 className="subHeading">Your Details: </h2>

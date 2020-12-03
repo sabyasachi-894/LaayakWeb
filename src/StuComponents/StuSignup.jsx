@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import M from 'materialize-css';
+import M from "materialize-css";
 import firebase from "../firebase";
 import ShowPassword from "../ShowPassword";
+import { auth } from "firebase";
 
 const db = firebase.firestore();
 
-function StuSignup() {
+const StuSignup = () => {
   const [code, setCode] = useState(""),
     [email, setEmail] = useState(""),
     [name, setName] = useState(""),
     [rno, setRno] = useState(null),
     [pass, setPass] = useState("");
-    // [list, setList] = useState([]),
-    // [duplicate, setDup] = useState(false);
+  // [list, setList] = useState([]),
+  // [duplicate, setDup] = useState(false);
 
   // useEffect(() => {
   //   if (code) {
@@ -26,7 +27,6 @@ function StuSignup() {
   //   }
   //   // eslint-disable-next-line
   // }, [code]);
-
 
   // const getCurrentList = () => {
   //   const docRef = db
@@ -42,22 +42,21 @@ function StuSignup() {
   const rollNoChange = (e) => {
     setRno(e.target.value);
     // checkRollNo(e.target.value);
-  }
+  };
 
   const checkRollNo = (rollNo, list) => {
     // setDup(false);
     let i;
-    for(i=0; i<list.length; i++){
+    for (i = 0; i < list.length; i++) {
       if (list[i].rollNo === rollNo) {
         // setDup(true);
         return true;
       }
     }
-    if(i === list.length){
+    if (i === list.length) {
       return false;
-    }    
-  }
-
+    }
+  };
 
   // // // SUBMIT // // //
 
@@ -70,18 +69,20 @@ function StuSignup() {
 
   // Step-1 Authenticate User
   const createUser = (classList) => {
-    const auth = firebase.auth();
-    auth
+    auth()
       .createUserWithEmailAndPassword(email, pass)
       .then((user) => {
-        user.user.updateProfile({
-          displayName: "student"
-        })
-        checkDetails(classList);
+        user.user
+          .updateProfile({
+            displayName: "student",
+          })
+          .then(() => {
+            checkDetails(classList);
+          });
       })
       .catch((err) => {
         classList.remove("loading");
-        M.toast({ html: err.message, classes: "toast error-toast" })
+        M.toast({ html: err.message, classes: "toast error-toast" });
       });
   };
 
@@ -90,32 +91,43 @@ function StuSignup() {
     const docCheck = db.collection("classes").doc(code);
     docCheck
       .get()
-      .then(function (doc) {
+      .then((doc) => {
         if (doc.exists) {
-          doc.ref.collection("details").doc("stuList")
+          doc.ref
+            .collection("details")
+            .doc("stuList")
             .get()
             .then((details) => {
               if (checkRollNo(rno, details.data().studentsList)) {
-                firebase.auth().currentUser.delete();
+                auth().currentUser.delete();
                 classList.remove("loading");
-                M.toast({ html: `Roll No- ${rno} already exists`, classes: "toast error-toast" })
-                return
+                M.toast({
+                  html: `Roll No- ${rno} already exists`,
+                  classes: "toast error-toast",
+                });
+                return;
               }
               createDoc();
               addToCRList();
               classList.remove("loading");
-              M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
-            })
+              M.toast({
+                html: "Registered Successfully",
+                classes: "toast success-toast",
+              });
+            });
         } else {
-          firebase.auth().currentUser.delete();
+          auth().currentUser.delete();
           classList.remove("loading");
-          M.toast({ html: "Wrong class code was entered, please recheck the entry!", classes: "toast error-toast" })
+          M.toast({
+            html: "Wrong class code was entered, please recheck the entry!",
+            classes: "toast error-toast",
+          });
         }
       })
-      .catch(function (error) {
-        firebase.auth().currentUser.delete();
+      .catch((error) => {
+        auth().currentUser.delete();
         classList.remove("loading");
-        M.toast({ html: error.message, classes: "toast error-toast" })
+        M.toast({ html: error.message, classes: "toast error-toast" });
       });
   };
 
@@ -132,7 +144,10 @@ function StuSignup() {
   //
   const createDoc = () => {
     const docRef = db.collection("students").doc(email);
-    docRef.set(obj);
+    docRef.set(obj).catch((err) => {
+      auth().currentUser.delete();
+      M.toast({ html: err.message, classes: "toast error-toast" });
+    });
   };
 
   // Step-4 Add student data to class document
@@ -147,18 +162,21 @@ function StuSignup() {
       name: obj.name,
       email: obj.email,
     };
-    docRef.update({
-      studentsList: firebase.firestore.FieldValue.arrayUnion(user)
-    })
-      .then(() => {
-        window.location.pathname = "/student";
-      })
-      .catch((err) => {
-        M.toast({ html: err.message, classes: "toast error-toast" })
-      });
+    if (auth().currentUser?.displayName === "student") {
+      docRef
+        .update({
+          studentsList: firebase.firestore.FieldValue.arrayUnion(user),
+        })
+        .then(() => {
+          window.location.pathname = "/student";
+        })
+        .catch((err) => {
+          auth().currentUser.delete();
+          M.toast({ html: err.message, classes: "toast error-toast" });
+        });
+    }
   };
-  // // // // // // // // // // // // 
-
+  // // // // // // // // // // // //
 
   return (
     <div className="main-container">
@@ -168,9 +186,7 @@ function StuSignup() {
           <form style={{ width: "100%" }}>
             <div className="con-inputs mt-4">
               <div className="con-input">
-                <label htmlFor="code">
-                  Class Code
-                </label>
+                <label htmlFor="code">Class Code</label>
                 <input
                   placeholder="Code provided by CR"
                   id="code"
@@ -181,7 +197,13 @@ function StuSignup() {
               </div>
               <div className="con-input">
                 <label htmlFor="name">Name</label>
-                <input type="text" placeholder="Name" id="name" required onChange={(e) => setName(e.target.value)} />
+                <input
+                  type="text"
+                  placeholder="Name"
+                  id="name"
+                  required
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
               <div className="con-input">
                 <label htmlFor="rollno">Roll Number</label>
@@ -220,7 +242,11 @@ function StuSignup() {
                 Already Joined? <Link to="/student/login">Log In</Link>
               </div>
               <footer>
-                <button onClick={handleSubmit} type="submit" className="btn-login">
+                <button
+                  onClick={handleSubmit}
+                  type="submit"
+                  className="btn-login"
+                >
                   Log In
                 </button>
               </footer>
@@ -230,6 +256,6 @@ function StuSignup() {
       </div>
     </div>
   );
-}
+};
 
 export default StuSignup;

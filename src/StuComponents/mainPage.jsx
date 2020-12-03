@@ -80,7 +80,6 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-    console.log(this.props.type)
     this.props.type === "Student" ? 
       this.stuDocRef.get().then((doc) => {
         if (doc.exists) {
