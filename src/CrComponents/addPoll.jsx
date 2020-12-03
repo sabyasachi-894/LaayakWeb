@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 
 class AddPoll extends Component {
   state = {
@@ -8,7 +8,7 @@ class AddPoll extends Component {
     yesOption: "",
     noOption: "",
     text: "",
-    isOfficial: false
+    isOfficial: false,
   };
 
   // toggle show state
@@ -48,12 +48,14 @@ class AddPoll extends Component {
           dialogClassName="modal-dialog-scrollable modal-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title><h3 className="mt-2">Add Poll Details:</h3></Modal.Title>
+            <Modal.Title>
+              <h3 className="mt-2">Add Poll Details:</h3>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <form onSubmit={this.callAddPoll}>{this.getForm()}</form>            
+            <form onSubmit={this.callAddPoll}>{this.getForm()}</form>
           </Modal.Body>
-        </Modal>        
+        </Modal>
       </div>
     );
   }
@@ -105,20 +107,23 @@ class AddPoll extends Component {
           </div>
         </div>
         <div className="form-group custom-control custom-switch">
-          <input 
-          type="checkbox" 
-          className="custom-control-input" 
-          id="pollIsOfficial"
-          name="isOfficial"
-          onChange={(e) => this.setState({isOfficial: e.target.checked})}
+          <input
+            type="checkbox"
+            className="custom-control-input"
+            id="pollIsOfficial"
+            name="isOfficial"
+            onChange={(e) => this.setState({ isOfficial: e.target.checked })}
           />
-          <label className="m-2 mb-0 custom-control-label" htmlFor="pollIsOfficial">
+          <label
+            className="m-2 mb-0 custom-control-label"
+            htmlFor="pollIsOfficial"
+          >
             Official
           </label>
         </div>
-        <button className="btn btn-success m-2" onClick={this.hideModal}>
+        <button type="submit" className="btn btn-success m-2">
           Add poll
-        </button>        
+        </button>
       </div>
     );
   };
@@ -139,16 +144,16 @@ class AddPoll extends Component {
       noOption: this.state.noOption,
       yesCount: 0,
       noCount: 0,
-      isOfficial: this.state.isOfficial
+      isOfficial: this.state.isOfficial,
     };
-    console.log(newPoll);
     this.props.addPoll(newPoll);
     this.setState({
       text: "",
       yesOption: "",
       noOption: "",
-      isOfficial: false
+      isOfficial: false,
     });
+    this.hideModal();
   };
 }
 

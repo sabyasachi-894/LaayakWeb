@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 
 class AddAnnouncement extends Component {
   state = {
@@ -45,7 +45,9 @@ class AddAnnouncement extends Component {
           dialogClassName="modal-dialog-scrollable modal-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title><h3 className="mt-2">Add Announcement Details:</h3></Modal.Title>
+            <Modal.Title>
+              <h3 className="mt-2">Add Announcement Details:</h3>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={this.callAddAnnouncement}>{this.getForm()}</form>
@@ -74,11 +76,7 @@ class AddAnnouncement extends Component {
             onChange={this.handleChange}
           />
         </div>
-        <button
-          className="btn btn-success m-2"
-          type="submit"
-          onClick={this.hideModal}
-        >
+        <button className="btn btn-success m-2" type="submit">
           Add
         </button>
       </div>
@@ -97,9 +95,9 @@ class AddAnnouncement extends Component {
       dateAndTime: firebase.firestore.Timestamp.fromDate(new Date()),
       type: "announcement",
       text: this.state.text,
-      isOfficial: true
+      isOfficial: true,
     };
-    console.log(newAnnouncement.dateAndTime);
+    this.hideModal();
     this.props.AddAnnouncement(newAnnouncement);
     this.setState({
       text: "",

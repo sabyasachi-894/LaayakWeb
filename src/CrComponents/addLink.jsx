@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 
 class AddLink extends Component {
   state = {
     show: false,
     link: "",
     text: "",
-    isOfficial: false
+    isOfficial: false,
   };
 
   // toggle show state
@@ -45,21 +45,20 @@ class AddLink extends Component {
           dialogClassName="modal-dialog-scrollable modal-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title><h3 className="mt-2">Add Link Details:</h3></Modal.Title>
+            <Modal.Title>
+              <h3 className="mt-2">Add Link Details:</h3>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={this.callAddAnnouncement}>
               {this.getForm()}
               <div>
-                <button
-                  className="btn btn-success m-2"
-                  onClick={this.hideModal}
-                >
+                <button type="submit" className="btn btn-success m-2">
                   Add Link
-                </button>                
+                </button>
               </div>
             </form>
-          </Modal.Body>          
+          </Modal.Body>
         </Modal>
       </div>
     );
@@ -104,7 +103,10 @@ class AddLink extends Component {
             name="isOfficial"
             onChange={(e) => this.setState({ isOfficial: e.target.checked })}
           />
-          <label className="m-2 mb-0 custom-control-label" htmlFor="linkIsOfficial">
+          <label
+            className="m-2 mb-0 custom-control-label"
+            htmlFor="linkIsOfficial"
+          >
             Official
           </label>
         </div>
@@ -125,14 +127,15 @@ class AddLink extends Component {
       type: "link",
       text: this.state.text,
       link: this.state.link,
-      isOfficial: this.state.isOfficial
+      isOfficial: this.state.isOfficial,
     };
     this.props.addLink(newLink);
     this.setState({
       text: "",
       link: "",
-      isOfficial: false
+      isOfficial: false,
     });
+    this.hideModal();
   };
 }
 

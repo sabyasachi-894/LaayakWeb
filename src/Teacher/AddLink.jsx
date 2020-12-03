@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
-import Modal from 'react-bootstrap/Modal';
+import Modal from "react-bootstrap/Modal";
 
 class AddLink extends Component {
   state = {
@@ -44,21 +44,20 @@ class AddLink extends Component {
           dialogClassName="modal-dialog-scrollable modal-lg"
         >
           <Modal.Header closeButton>
-            <Modal.Title><h3 className="mt-2">Add Link Details:</h3></Modal.Title>
+            <Modal.Title>
+              <h3 className="mt-2">Add Link Details:</h3>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <form onSubmit={this.callAddAnnouncement}>
               {this.getForm()}
               <div>
-                <button
-                  className="btn btn-success m-2"
-                  onClick={this.hideModal}
-                >
+                <button className="btn btn-success m-2" type="submit">
                   Add Link
-                </button>                
+                </button>
               </div>
             </form>
-          </Modal.Body>          
+          </Modal.Body>
         </Modal>
       </div>
     );
@@ -103,7 +102,6 @@ class AddLink extends Component {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
-    console.log(this.state);
   };
 
   callAddAnnouncement = (e) => {
@@ -113,13 +111,14 @@ class AddLink extends Component {
       type: "link",
       text: this.state.text,
       link: this.state.link,
-      isOfficial: true
+      isOfficial: true,
     };
     this.props.addLink(newLink);
     this.setState({
       text: "",
       link: "",
     });
+    this.hideModal();
   };
 }
 

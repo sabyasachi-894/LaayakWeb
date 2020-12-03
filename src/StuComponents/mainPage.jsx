@@ -300,7 +300,14 @@ class MainPage extends Component {
         />
       </div>
     );
-    return this.state.classCode !== " " ? display : <h1>Join Your Friends</h1>;
+    return this.state.classCode === "kicked" ? (
+      <>
+        <h1>CR has removed you from the class</h1>
+        {/* <img src="/stuEjected.gif" width="75%" /> */}
+      </>
+    ) : (
+      display
+    );
   }
   // Sort Announcements
   sortAnnouncements = () => {

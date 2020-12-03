@@ -32,7 +32,6 @@ class AfterSignup extends Component {
 
   handleSubmitDetails = (e) => {
     e.preventDefault();
-    auth.currentUser.delete();
     this.addDoc();
   };
 
@@ -68,7 +67,7 @@ class AfterSignup extends Component {
         });
       });
     }
-    auth.currentUser.delete();
+    // auth.currentUser.delete();
   };
 
   render() {
