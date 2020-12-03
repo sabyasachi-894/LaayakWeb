@@ -12,7 +12,7 @@ import Loader from "./Loader/Loader";
 
 const Home = lazy(() => import("./Home/home"));
 const StuLanding = lazy(() => import("./StuComponents/stuLanding"));
-const StuSignup = lazy(() => import('./StuComponents/StuSignup'));
+const StuSignup = lazy(() => import("./StuComponents/StuSignup"));
 const CrLanding = lazy(() => import("./CrComponents/crLanding"));
 const About = lazy(() => import("./about"));
 const NewCr = lazy(() => import("./CrComponents/newCr"));
@@ -29,13 +29,15 @@ const StuLogin = lazy(() => import("./StuComponents/StuLogin"));
 const Profile = lazy(() => import("./StuComponents/profile/Profile"));
 
 function App() {
-  document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
+  document
+    .getElementsByTagName("body")[0]
+    .classList.add(localStorage.getItem("mode"));
   return (
     <div className="App">
       <Router>
         <MainNavBar />
-          <Suspense fallback={<Loader />}>
-            <Switch>
+        <Suspense fallback={<Loader />}>
+          <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/student" exact component={StuLanding} />
             <Route path="/student/login" exact component={StuLogin} />
@@ -50,11 +52,15 @@ function App() {
             <Route path="/teacher/login" exact component={TeacherLogin} />
             <Route path="/teacher/class" exact component={ClassDetails} />
             <Route path="/newteacher" exact component={NewTeacher} />
-            <Route path="/newteacher/details" exact component={TeacherDetails} />
+            <Route
+              path="/newteacher/details"
+              exact
+              component={TeacherDetails}
+            />
             <Route path="/about" exact component={About} />
             <Route path="*" component={NotFound} />
-            </Switch>
-          </Suspense>
+          </Switch>
+        </Suspense>
       </Router>
     </div>
   );

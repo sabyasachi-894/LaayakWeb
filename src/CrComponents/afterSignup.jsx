@@ -15,7 +15,6 @@ class AfterSignup extends Component {
       course: "",
       crName: "", //username
       sem: "",
-      timeTable: "Himesh set krega",
     },
     rollNo: "",
     redirect: false,
@@ -212,6 +211,8 @@ class AfterSignup extends Component {
         classId: docRef.id,
         email: this.state.user?.email,
       },
+      timeTable:
+        "https://www.softwaresuggest.com/blog/wp-content/uploads/2019/10/Advantages-of-Timetable-Management-System-in-Schools-1.png",
     };
     docRef.add(obj).then((doc) => {
       const upRef = doc.collection("updates").doc("announcements");
@@ -231,11 +232,6 @@ class AfterSignup extends Component {
         ],
       });
     });
-    // const crRef = db.collection("cr").doc(this.state?.user.email);
-    // crRef.update({
-    //   name: this.state.details.crName,
-    //   rollNo: this.state.rollNo,
-    // });
     classList.remove("loading");
     setTimeout(() => {
       window.location.reload();

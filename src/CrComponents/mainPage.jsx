@@ -30,6 +30,7 @@ class MainPage extends Component {
     user: firebase.auth().currentUser,
     crCode: this.props.CrCode,
     loading: true,
+    tt: "",
   };
 
   collRef = db.collection("classes");
@@ -63,6 +64,7 @@ class MainPage extends Component {
           }),
           details: doc.data().details,
           loading: false,
+          tt: doc.data().timeTable,
         });
       }
     });
@@ -132,6 +134,7 @@ class MainPage extends Component {
                     email: this.state.user.email,
                     classId: this.state.crCode,
                     details: this.state.details,
+                    tt: this.state.tt,
                   },
                 }}
                 style={{ textDecoration: "none" }}
