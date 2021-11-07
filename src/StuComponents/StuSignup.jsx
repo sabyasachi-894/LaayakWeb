@@ -183,7 +183,7 @@ const StuSignup = () => {
       <div className="container-login mx-auto">
         <div className="con-login">
           <h1>Join Your Classmates</h1>
-          <form style={{ width: "100%" }}>
+          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <div className="con-inputs mt-4">
               <div className="con-input">
                 <label htmlFor="code">Class Code</label>
@@ -242,11 +242,7 @@ const StuSignup = () => {
                 Already Joined? <Link to="/student/login">Log In</Link>
               </div>
               <footer>
-                <button
-                  onClick={handleSubmit}
-                  type="submit"
-                  className="btn-login"
-                >
+                <button type="submit" className="btn-login">
                   Log In
                 </button>
               </footer>

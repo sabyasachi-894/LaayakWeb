@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 const db = firebase.firestore(),
   auth = firebase.auth();
 
-let docRef = db.collection("classes");
+let docRef = db.collection("classes").doc();
 
 class AfterSignup extends Component {
   isMount = false;
@@ -106,7 +106,7 @@ class AfterSignup extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Additional Details</h1>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
                   <label htmlFor="crName">Username</label>
@@ -183,11 +183,7 @@ class AfterSignup extends Component {
                 </div>
               </div>
               <footer>
-                <button
-                  onClick={this.handleSubmitDetails}
-                  type="submit"
-                  className="btn-login"
-                >
+                <button type="submit" className="btn-login">
                   Submit
                 </button>
               </footer>
@@ -214,7 +210,7 @@ class AfterSignup extends Component {
       timeTable:
         "https://www.softwaresuggest.com/blog/wp-content/uploads/2019/10/Advantages-of-Timetable-Management-System-in-Schools-1.png",
     };
-    docRef.add(obj).then((doc) => {
+    docRef.set(obj).then((doc) => {
       const upRef = doc.collection("updates").doc("announcements");
       upRef.set({ announcements: [], assignments: [] });
       const lecRef = doc.collection("lectures").doc("lecturesToday");
@@ -235,7 +231,7 @@ class AfterSignup extends Component {
     classList.remove("loading");
     setTimeout(() => {
       window.location.reload();
-    }, 1000);
+    }, 2000);
   };
 }
 

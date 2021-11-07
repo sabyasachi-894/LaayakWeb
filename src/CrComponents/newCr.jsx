@@ -21,7 +21,7 @@ class NewCr extends Component {
     this.isMount = true;
     if (this.isMount) {
       auth.onAuthStateChanged((user) => {
-        if (user?.displayName==="cr") {          
+        if (user?.displayName === "cr") {
           const stuRef = db.collection("cr").doc(user.email);
           stuRef.onSnapshot((snap) => {
             if (snap.data()) {
@@ -48,18 +48,21 @@ class NewCr extends Component {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((user) => {
-          if(user){
+          if (user) {
             user.user.updateProfile({
-              displayName: "cr"
-            })
-          }          
+              displayName: "cr",
+            });
+          }
           classList.remove("loading");
-          M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
+          M.toast({
+            html: "Registered Successfully",
+            classes: "toast success-toast",
+          });
           this.isMount && this.setState({ authStatus: true });
         })
         .catch((err) => {
           classList.remove("loading");
-          M.toast({ html: err.message, classes: "toast error-toast" })
+          M.toast({ html: err.message, classes: "toast error-toast" });
         });
     }
   };
@@ -78,8 +81,8 @@ class NewCr extends Component {
     return this.state.authStatus ? (
       <Redirect to="/newcr/details" />
     ) : (
-       <div>{this.getForm()}</div>
-      );
+      <div>{this.getForm()}</div>
+    );
   }
 
   getForm = () => {
@@ -88,7 +91,7 @@ class NewCr extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Sign Up</h1>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={this.handleSignUp} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
                   <label htmlFor="email">Email</label>
@@ -104,7 +107,7 @@ class NewCr extends Component {
                 </div>
                 <div className="con-input">
                   <label htmlFor="password">Password</label>
-                  <input                  
+                  <input
                     placeholder="Password"
                     id="password"
                     name="password"
@@ -120,7 +123,7 @@ class NewCr extends Component {
                 </div>
               </div>
               <footer>
-                <button onClick={this.handleSignUp} type="submit" className="btn-login">
+                <button type="submit" className="btn-login">
                   Register
                 </button>
               </footer>

@@ -1,34 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import ShowTimetable from "../../CrComponents/ShowTimetable";
 import DarkToggle from "../../DarkToggle/DarkToggle";
 import Details from "./Details";
 
-const Profile = (props) => {
+const Profile = ({ onHide, doc, type, tt }) => {
   return (
     <div className="container-fluid">
       <div className="code-head-btn">
         <DarkToggle />
         <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
-          Class Details
+          Your Details
         </h1>
-        <Link className="float-md-right mb-2 mr-2" to="/student">
-          <i
-            className="fa fa-home"
-            style={{ fontSize: "30px", color: "#000" }}
-          ></i>
-        </Link>
+        <i
+          onClick={onHide}
+          className="fa fa-home"
+          style={{ cursor: "pointer", fontSize: "30px", color: "#000" }}
+        ></i>
       </div>
       {/* student details */}
+      <Details details={doc} type={type} />
       <div id="Details">
-        <h2 className="subHeading">Your Details: </h2>
+        <h2 className="subHeading">Class Details: </h2>
       </div>
       <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-      <Details
-        details={props.location.state.doc}
-        type={props.location.state.type}
-      />
-      <ShowTimetable tt={props.location.state.tt} />
+      <h1 id="Timetable">Time Table</h1>
+      <ShowTimetable tt={tt} />
     </div>
   );
 };

@@ -12,12 +12,12 @@ import BottomNav from "../BottomNav/bnav";
 import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import { Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import M from "materialize-css";
 import AddAssign from "./addAssign";
 import ShowAssign from "./showAssign";
-// reference to firestore
+import ClassDetails from "./ClassDetails";
 
+// reference to firestore
 let db = firebase.firestore();
 
 class MainPage extends Component {
@@ -31,6 +31,7 @@ class MainPage extends Component {
     crCode: this.props.CrCode,
     loading: true,
     tt: "",
+    showDetails: false,
   };
 
   collRef = db.collection("classes");
@@ -107,6 +108,14 @@ class MainPage extends Component {
   render() {
     const display = this.state.loading ? (
       <Loader />
+    ) : this.state.showDetails ? (
+      <ClassDetails
+        onHide={() => this.setState({ showDetails: false })}
+        email={this.state.user.email}
+        classId={this.state.crCode}
+        details={this.state.details}
+        tt={this.state.tt}
+      />
     ) : (
       <div className="container-fluid">
         <div className="code-head-btn">
@@ -120,14 +129,13 @@ class MainPage extends Component {
                 style={{ fontSize: "30px", cursor: "pointer" }}
               />
             </Dropdown.Toggle>
-
             <Dropdown.Menu className="cr-profile-dropdown">
               <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
               <Dropdown.Item onClick={this.copyLink}>
                 {" "}
                 {this.state.crCode}{" "}
               </Dropdown.Item>
-              <Link
+              {/* <Link
                 to={{
                   pathname: "/cr/class",
                   state: {
@@ -138,9 +146,13 @@ class MainPage extends Component {
                   },
                 }}
                 style={{ textDecoration: "none" }}
+              > */}
+              <Dropdown.Item
+                onClick={() => this.setState({ showDetails: true })}
               >
-                <Dropdown.Item href="/cr/class">Class Details</Dropdown.Item>
-              </Link>
+                Class Details
+              </Dropdown.Item>
+              {/* </Link> */}
 
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => this.handleSignOut()}>

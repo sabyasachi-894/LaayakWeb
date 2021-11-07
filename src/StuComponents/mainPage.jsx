@@ -8,9 +8,9 @@ import firebase from "../firebase";
 import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import { Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import M from "materialize-css";
 import ShowAssign from "./showAssign";
+import Profile from "./profile/Profile";
 
 // reference to firestore
 const db = firebase.firestore();
@@ -28,6 +28,7 @@ class MainPage extends Component {
     assignments: [],
     loading: true,
     tt: "",
+    showProfile: false,
   };
   type = this.props.type;
   stuDocRef = db.collection("students").doc(this.props.email);
@@ -128,6 +129,13 @@ class MainPage extends Component {
     var display = <Loader />;
     display = this.state.loading ? (
       <Loader />
+    ) : this.state.showProfile ? (
+      <Profile
+        onHide={() => this.setState({ showProfile: false })}
+        doc={this.state.stuDoc}
+        type={this.props.type}
+        tt={this.state.tt}
+      />
     ) : (
       <div className="container-fluid">
         <div className="code-head-btn">
@@ -141,19 +149,11 @@ class MainPage extends Component {
               />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Link
-                to={{
-                  pathname: "/student/profile",
-                  state: {
-                    doc: this.state.stuDoc,
-                    type: this.props.type,
-                    tt: this.state.tt,
-                  },
-                }}
-                style={{ textDecoration: "none" }}
+              <Dropdown.Item
+                onClick={() => this.setState({ showProfile: true })}
               >
-                <Dropdown.Item href="/student/profile">Profile</Dropdown.Item>
-              </Link>
+                Profile
+              </Dropdown.Item>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => this.handleSignOut()}>
                 <i
@@ -303,7 +303,7 @@ class MainPage extends Component {
     return this.state.classCode === "kicked" ? (
       <>
         <h1>CR has removed you from the class</h1>
-        {/* <img src="/stuEjected.gif" width="75%" /> */}
+        <img src="/stuEjected.gif" alt="ejected" width="75%" />
       </>
     ) : (
       display

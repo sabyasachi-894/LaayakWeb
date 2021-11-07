@@ -7,6 +7,7 @@ import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
 import DarkToggle from "../DarkToggle/DarkToggle";
 import M from "materialize-css";
+import ClassDetails from "./ClassDetails";
 
 let db = firebase.firestore();
 
@@ -18,6 +19,8 @@ class MainPage extends Component {
     lecturesToday: [],
     user: firebase.auth().currentUser,
     loading: true,
+    showDetails: false,
+    classId: null,
   };
 
   claRef = db.collection("classes");
@@ -150,6 +153,12 @@ class MainPage extends Component {
               <Class
                 key={classTeaching.details.classId}
                 class={classTeaching}
+                onShow={() =>
+                  this.setState({
+                    showDetails: true,
+                    classId: classTeaching.details.classId,
+                  })
+                }
               />
             ))
           )}
@@ -157,7 +166,19 @@ class MainPage extends Component {
         <BottomNav paths={["Details", "Lectures", "Classes"]} />
       </div>
     );
-    return display;
+    return this.state.showDetails ? (
+      <ClassDetails
+        classCode={this.state.classId}
+        onHide={() =>
+          this.setState({
+            showDetails: false,
+            classId: null,
+          })
+        }
+      />
+    ) : (
+      display
+    );
   }
   // All add functions
   addLecture = (newLecture) => {

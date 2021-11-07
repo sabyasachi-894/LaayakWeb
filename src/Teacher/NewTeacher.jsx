@@ -26,15 +26,18 @@ class NewTeacher extends Component {
         .createUserWithEmailAndPassword(email, password)
         .then((user) => {
           user.user.updateProfile({
-            displayName: "teacher"
-          })
+            displayName: "teacher",
+          });
           classList.remove("loading");
-          M.toast({ html: "Registered Successfully", classes: "toast success-toast" })
+          M.toast({
+            html: "Registered Successfully",
+            classes: "toast success-toast",
+          });
           this.setState({ authStatus: true });
         })
         .catch((err) => {
           classList.remove("loading");
-          M.toast({ html: err.message, classes: "toast error-toast" })
+          M.toast({ html: err.message, classes: "toast error-toast" });
         });
     }
   };
@@ -52,10 +55,8 @@ class NewTeacher extends Component {
     return this.state.authStatus ? (
       <Redirect to="/newteacher/details" />
     ) : (
-        <div>          
-          {this.getForm()}
-        </div>
-      );
+      <div>{this.getForm()}</div>
+    );
   }
 
   getForm = () => {
@@ -64,12 +65,10 @@ class NewTeacher extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Sign Up</h1>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={this.handleSignUp} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
-                  <label htmlFor="email">
-                    Email
-                        </label>
+                  <label htmlFor="email">Email</label>
                   <input
                     placeholder="email@example.com"
                     id="email"
@@ -81,9 +80,7 @@ class NewTeacher extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="password">
-                    Password
-                        </label>
+                  <label htmlFor="password">Password</label>
                   <input
                     placeholder="Password"
                     id="password"
@@ -100,7 +97,7 @@ class NewTeacher extends Component {
                 </div>
               </div>
               <footer>
-                <button onClick={this.handleSignUp} type="submit" className="btn-login">
+                <button type="submit" className="btn-login">
                   Register
                 </button>
               </footer>

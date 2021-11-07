@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import firebase from "../firebase";
-import M from 'materialize-css';
+import M from "materialize-css";
 import ShowPassword from "../ShowPassword";
 
 class CrLogin extends Component {
@@ -18,41 +18,49 @@ class CrLogin extends Component {
     });
   };
 
-
   handleLogin = (event) => {
     event.preventDefault();
     const classList = event.target.classList;
     classList.add("loading");
     const email = this.state.email,
       pass = this.state.password;
-    firebase.auth().signInWithEmailAndPassword(email, pass)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, pass)
       .then((user) => {
         if (user.user.displayName === "cr") {
-          M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
+          M.toast({
+            html: "Logged In Successfully",
+            classes: "toast success-toast",
+          });
           classList.remove("loading");
-          window.location.pathname = "/cr"
-        } else{
+          window.location.pathname = "/cr";
+        } else {
           classList.remove("loading");
-          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+          M.toast({
+            html: "Invalid Email/Password",
+            classes: "toast error-toast",
+          });
         }
       })
       .catch((err) => {
         if (
-          err.message === "The password is invalid or the user does not have a password." ||
-          err.message === "There is no user record corresponding to this identifier. The user may have been deleted."
+          err.message ===
+            "The password is invalid or the user does not have a password." ||
+          err.message ===
+            "There is no user record corresponding to this identifier. The user may have been deleted."
         ) {
           classList.remove("loading");
-          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+          M.toast({
+            html: "Invalid Email/Password",
+            classes: "toast error-toast",
+          });
         }
       });
   };
 
   render() {
-    return (
-      <div>
-        {this.getForm()}
-      </div>
-    );
+    return <div>{this.getForm()}</div>;
   }
 
   getForm = () => {
@@ -61,12 +69,10 @@ class CrLogin extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Log In</h1>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={this.handleLogin} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
-                  <label htmlFor="email">
-                    Email
-                        </label>
+                  <label htmlFor="email">Email</label>
                   <input
                     placeholder="email@example.com"
                     id="email"
@@ -78,9 +84,7 @@ class CrLogin extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="password">
-                    Password
-                        </label>
+                  <label htmlFor="password">Password</label>
                   <input
                     placeholder="Password"
                     id="password"
@@ -97,7 +101,7 @@ class CrLogin extends Component {
                 </div>
               </div>
               <footer>
-                <button onClick={this.handleLogin} type="submit" className="btn-login">
+                <button type="submit" className="btn-login">
                   Log In
                 </button>
               </footer>

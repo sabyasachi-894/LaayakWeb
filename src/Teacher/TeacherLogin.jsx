@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import M from "materialize-css"
+import M from "materialize-css";
 import firebase from "../firebase";
 import ShowPassword from "../ShowPassword";
 
@@ -24,31 +24,41 @@ class TeacherLogin extends Component {
     classList.add("loading");
     const email = this.state.email,
       pass = this.state.password;
-    firebase.auth().signInWithEmailAndPassword(email, pass)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, pass)
       .then((user) => {
         if (user.user.displayName === "teacher") {
           classList.remove("loading");
-          M.toast({ html: "Logged In Successfully", classes: "toast success-toast" })
-          window.location.pathname = "/teacher"
+          M.toast({
+            html: "Logged In Successfully",
+            classes: "toast success-toast",
+          });
+          window.location.pathname = "/teacher";
         } else {
           classList.remove("loading");
-          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" });
+          M.toast({
+            html: "Invalid Email/Password",
+            classes: "toast error-toast",
+          });
         }
       })
       .catch((err) => {
-        if (err.message === "The password is invalid or the user does not have a password.") {
+        if (
+          err.message ===
+          "The password is invalid or the user does not have a password."
+        ) {
           classList.remove("loading");
-          M.toast({ html: "Invalid Email/Password", classes: "toast error-toast" })
+          M.toast({
+            html: "Invalid Email/Password",
+            classes: "toast error-toast",
+          });
         }
       });
   };
 
   render() {
-    return (
-      <div>
-        {this.form()}
-      </div>
-    );
+    return <div>{this.form()}</div>;
   }
 
   form = () => {
@@ -57,12 +67,10 @@ class TeacherLogin extends Component {
         <div className="container-login mx-auto">
           <div className="con-login">
             <h1>Log In</h1>
-            <form style={{ width: "100%" }}>
+            <form onSubmit={this.handleLogin} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
-                  <label htmlFor="email">
-                    Email
-                        </label>
+                  <label htmlFor="email">Email</label>
                   <input
                     placeholder="email@example.com"
                     id="email"
@@ -74,9 +82,7 @@ class TeacherLogin extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="password">
-                    Password
-                        </label>
+                  <label htmlFor="password">Password</label>
                   <input
                     placeholder="Password"
                     id="password"
@@ -93,7 +99,7 @@ class TeacherLogin extends Component {
                 </div>
               </div>
               <footer>
-                <button onClick={this.handleLogin} type="submit" className="btn-login">
+                <button type="submit" className="btn-login">
                   Log In
                 </button>
               </footer>

@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Details from "../StuComponents/details";
 import Announcement from "./Announcement";
 import Announce from "./Announce";
 import AddPoll from "./AddPoll";
 import AddLink from "./AddLink";
 import firebase from "../firebase";
-import { Link } from 'react-router-dom';
-import BottomNav from '../BottomNav/bnav';
-import DarkToggle from "../DarkToggle/DarkToggle"
-import AddAssign from './addAssign';
-import ShowAssign from './showAssign';
+import BottomNav from "../BottomNav/bnav";
+import DarkToggle from "../DarkToggle/DarkToggle";
+import AddAssign from "./addAssign";
+import ShowAssign from "./showAssign";
 let db = firebase.firestore();
 
-
-class classDetails extends Component {
-  isMount = false
+class ClassDetails extends Component {
+  isMount = false;
   state = {
     details: [],
     announcements: [],
     assignments: [],
-    classId: this.props.location.state.classId
+    classId: this.props.classCode,
   };
 
   collRef = db.collection("classes");
@@ -28,7 +26,7 @@ class classDetails extends Component {
   docRefUp = this.collRefUp.doc("announcements");
 
   componentDidMount() {
-    this.isMount = true
+    this.isMount = true;
     this.docRef.onSnapshot((doc) => {
       if (doc.data()) {
         if (this.isMount) {
@@ -40,17 +38,17 @@ class classDetails extends Component {
     });
     this.docRefUp.onSnapshot((doc) => {
       if (doc.data()) {
-        if(this.isMount){
+        if (this.isMount) {
           this.setState({
-            assignments: doc.data().assignments
-          })
+            assignments: doc.data().assignments,
+          });
         }
         doc.data().announcements.forEach((announcement) => {
           if (announcement.isOfficial) {
             if (this.isMount) {
               this.setState({
-                announcements: this.state.announcements.concat(announcement)
-              })
+                announcements: this.state.announcements.concat(announcement),
+              });
             }
           }
         });
@@ -70,12 +68,16 @@ class classDetails extends Component {
           <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
             Class Details
           </h1>
-          <Link className="float-md-right mb-2 mr-2" to="/teacher">
-            <i className="fa fa-home" style={{ fontSize: "30px", color: "#000" }}></i>
-          </Link>
+          <i
+            onClick={this.props.onHide}
+            className="fa fa-home float-md-right mb-2 mr-2"
+            style={{ cursor: "pointer", fontSize: "30px", color: "#000" }}
+          ></i>
         </div>
         {/* semester details */}
-        <h2 id="Details" className="subHeading">Info: </h2>
+        <h2 id="Details" className="subHeading">
+          Info:{" "}
+        </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
         {/* Assignments */}
@@ -91,23 +93,29 @@ class classDetails extends Component {
             addAssign={this.addAssignment}
             classCode={this.state.classId}
           />
-          {this.state.assignments.length ?
+          {this.state.assignments.length ? (
             this.state.assignments.map((assignment) => (
               <ShowAssign
                 key={assignment.url}
                 onDelete={this.deleteAssignment}
                 details={assignment}
               />
-            )) :
+            ))
+          ) : (
             <h4 style={{ textAlign: "center", width: "100%" }}>
               No Assignments pending for the class
             </h4>
-          }
+          )}
         </div>
         {/* Announcement/polls/links */}
         <div id="Announcements">
           <div className="d-inline container-fluid">
-            <h2 className="subHeading">Manage Announcements <span role="img" aria-label="announcement">📢</span></h2>
+            <h2 className="subHeading">
+              Manage Announcements{" "}
+              <span role="img" aria-label="announcement">
+                📢
+              </span>
+            </h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           </div>
 
@@ -122,13 +130,28 @@ class classDetails extends Component {
               Key
             </h5>
             <div className="poll-card m-2" style={{ width: "150px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  📢{" "}
+                </span>{" "}
+                Announcements
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🔗
+                </span>
+                Links
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🗳️
+                </span>
+                Polls
+              </span>
             </div>
           </div>
         </div>
@@ -141,11 +164,8 @@ class classDetails extends Component {
             />
           ))}
         </div>
-        <BottomNav
-          paths={["Details", "Assignments", "Announcements"]}
-        />
+        <BottomNav paths={["Details", "Assignments", "Announcements"]} />
       </div>
-
     );
   }
   sortAnnouncements = () => {
@@ -183,34 +203,32 @@ class classDetails extends Component {
       announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
     });
     this.setState({
-      announcements: []
-    })
+      announcements: [],
+    });
   };
   deleteAnnouncement = (announcement) => {
     this.docRefUp.update({
       announcements: firebase.firestore.FieldValue.arrayRemove(announcement),
     });
     this.setState({
-      announcements: []
-    })
+      announcements: [],
+    });
   };
   addAssignment = (newAssign) => {
     this.docRefUp.update({
       assignments: firebase.firestore.FieldValue.arrayUnion(newAssign),
     });
-  }
+  };
   deleteAssignment = (assign) => {
     const fileRef = firebase
       .storage()
       .ref(`assignment/${this.state.classId}/${assign.fileName}`);
-    fileRef
-      .delete()
-      .then(() => {
-        alert("Deleted Successfully")
-      })
+    fileRef.delete().then(() => {
+      alert("Deleted Successfully");
+    });
     this.docRefUp.update({
       assignments: firebase.firestore.FieldValue.arrayRemove(assign),
     });
-  }
+  };
 }
-export default classDetails;
+export default ClassDetails;
