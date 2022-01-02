@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-nav {
+.fixed-top {
   background-color: #d4cece;
   height: 8vh;
   font-size: 2.3vh;
@@ -60,7 +60,7 @@ nav {
   width: 60%;
   height: 100%;
   margin-left: auto;
-  margin-right: 1vw;
+  margin-right: 2vw;
   list-style: none;
   z-index: 1;
 }
