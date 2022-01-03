@@ -35,9 +35,6 @@ class MainNavBar extends Component {
           <Link to="/about" className="nav-link">
             <li>about</li>
           </Link>
-          <div className="dark-light">
-            <span id="i001" className="fas fa-moon"></span>
-          </div>
         </ul>
       </nav>
     );
