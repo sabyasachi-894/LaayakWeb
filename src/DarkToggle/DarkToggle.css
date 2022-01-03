@@ -1,9 +1,10 @@
 /* The switch - the box around the slider */
 .switch {
   margin-right: -92%;  
+  margin-top: 25%;
   position: relative;
   display: inline-block;
-  width: 65px;
+  width: 67px;
   height: 24px;
 }
 
@@ -27,7 +28,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #87ceeb;
+    background-color: #d4cece;
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
@@ -45,7 +46,7 @@
     -webkit-transition: 0.4s;
     transition: 0.4s;
     box-shadow: 0 0px 15px #2020203d;
-    background: white url('https://i.ibb.co/7JfqXxB/sunny.png');
+    background: whitesmoke url('https://i.ibb.co/7JfqXxB/sunny.png');
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -54,9 +55,9 @@
     background-color: #01021d;
   }
   
-  /* input:focus + .slider {
-    box-shadow: 0 0 1px #01021d;
-  } */
+  input:focus + .slider {
+    box-shadow: 2px 2px 5px palevioletred;
+  } 
   
   input:checked + .slider:before {
     -webkit-transform: translateX(37px);

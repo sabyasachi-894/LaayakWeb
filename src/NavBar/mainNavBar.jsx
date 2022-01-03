@@ -3,7 +3,7 @@ import "./main.css";
 import "./script";
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
-
+import DarkToggle from "../DarkToggle/DarkToggle";
 class MainNavBar extends Component {
   state = {};
   render() {
@@ -35,6 +35,7 @@ class MainNavBar extends Component {
           <Link to="/about" className="nav-link">
             <li>about</li>
           </Link>
+          <DarkToggle/>
         </ul>
       </nav>
     );

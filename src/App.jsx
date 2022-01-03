@@ -9,7 +9,7 @@ import "./assets/css/loadingButton.css";
 import "./assets/css/fileInput.css";
 import MainNavBar from "./NavBar/mainNavBar";
 import Loader from "./Loader/Loader";
-import DarkToggle from "./DarkToggle/DarkToggle"
+
 const Home = lazy(() => import("./Home/home"));
 const StuLanding = lazy(() => import("./StuComponents/stuLanding"));
 const StuSignup = lazy(() => import("./StuComponents/StuSignup"));
@@ -36,7 +36,6 @@ function App() {
     <div className="App">
       <Router>
         <MainNavBar />
-        <DarkToggle />
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route path="/" exact component={Home} />
