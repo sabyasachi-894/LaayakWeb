@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 nav {
   background-color: #d4cece;
   height: 8vh;
@@ -82,6 +81,17 @@ nav {
   font-size: 2.7vh;
   color: white;
   opacity: 1;
+}
+
+.dark-light
+{
+  opacity: 0.7;
+  transition: 0.3s ease;
+}
+
+.dark-light:hover {
+  opacity: 1;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 900px) {

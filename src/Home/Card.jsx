@@ -3,18 +3,24 @@ import { Link } from 'react-router-dom';
 import "./card.css"
 
 const Card = (props) => {
+
     return (
-        <div className="cards-wrapper">
+        <div className="banner">
+        <div className="cards">
             {props.details.map((item) => (
                 <Link to={item.href} key={item.head}>
-                    <div className="card" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), url(${item.bg})` }}>
-                        <div> 
-                            <h1>{item.head}</h1>
-                            <p>{item.content}</p>
+                    <div className="card">
+                        <div className={`container ${item.diffClass}`}>
+                            <img className='image' src={item.bg} alt="Teacher" />
                         </div>
+                       <div className="details">
+                           <h2>{item.head}</h2>
+                           <h3>{item.content}</h3>
+                       </div>
                     </div>
                 </Link>
             ))}
+        </div>
         </div>
     );
 }

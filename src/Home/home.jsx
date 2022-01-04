@@ -28,28 +28,31 @@ class Home extends Component {
         {this.getHeader()}
         <div className="get-started">
           <h1>Get Started</h1>
-          <Card
+           <Card
             details={[
               {
                 head: "Teacher",
-                content: "Ask teachers to register their themselves on Laayak",
-                bg: "images/teacher.jpg",
-                href: "/teacher"
+                content: "Teachers are kindly requested to register themselves on Laayak through sinup/login portal",
+                bg: "images/dp1.jpg",
+                href: "/teacher",
+                diffClass: "teacher"
               },
               {
                 head: "Class Representative",
-                content: "CRs can register their class and add subjects using Teacher ID",
-                bg: "images/cr.jpg",
-                href: "/cr"
+                content: "CRs can register their class and add subjects using Teacher ID through sinup/login portal",
+                bg: "images/dp2.jpg",
+                href: "/cr",
+                diffClass: "CR"
               },
               {
                 head: "Student",
-                content: "Students can join their class on Laayak using code provided by CR",
-                bg: "images/student.png",
-                href: "/student"
+                content: "Students can join their class on Laayak using code provided by CR through sinup/login portal",
+                bg: "images/dp3.jpg",
+                href: "/student",
+                diffClass: "student"
               }
             ]}
-          />
+          /> 
         </div>
         <hr />
         <Contact />

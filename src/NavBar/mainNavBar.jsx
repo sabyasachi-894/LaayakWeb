@@ -10,11 +10,10 @@ class MainNavBar extends Component {
     return (
       <nav className="fixed-top">
         <div className="hamburger">
-          <div className="line"></div>
+          <div className="line"></div> 
           <div className="line"></div>
           <div className="line"></div>
         </div>
-
         <div className="brand">
           <img src={logo} alt="LAAYAK" className="logo" />
           <li>LaayaK</li>
@@ -35,6 +34,9 @@ class MainNavBar extends Component {
           <Link to="/about" className="nav-link">
             <li>about</li>
           </Link>
+          <div className="dark-light">
+            <span id="i001" class="fas fa-sun"></span>
+        </div>
         </ul>
       </nav>
     );
