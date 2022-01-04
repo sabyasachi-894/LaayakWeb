@@ -14,7 +14,7 @@ class DarkToggle extends Component {
             })
         }
         return (
-            <div className="float-md-left w-auto mb-2 input-group custom-control custom-switch">
+            <div className="input-dark">
                 <label id="switch" className="switch">
                     <input 
                     type="checkbox" 

@@ -1,10 +1,11 @@
 /* The switch - the box around the slider */
 .switch {
-  margin-left: -30px; 
+  margin-right: -92%;  
+  margin-top: 25%;
   position: relative;
   display: inline-block;
-  width: 75px;
-  height: 34px;
+  width: 67px;
+  height: 24px;
 }
 
 @media (max-width: 500px) {
@@ -27,7 +28,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #d4dee0;
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
@@ -35,8 +36,8 @@
   .slider:before {
     position: absolute;
     content: "";
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
     left: 0px;
     bottom: 4px;
     top: 0;
@@ -45,24 +46,24 @@
     -webkit-transition: 0.4s;
     transition: 0.4s;
     box-shadow: 0 0px 15px #2020203d;
-    background: white url('https://i.ibb.co/7JfqXxB/sunny.png');
+    background: whitesmoke url('https://i.ibb.co/7JfqXxB/sunny.png');
     background-repeat: no-repeat;
     background-position: center;
   }
   
   input:checked + .slider {
-    background-color: #2196f3;
+    background-color: #01021d;
   }
   
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
-  }
+    box-shadow: 2px 2px 5px palevioletred;
+  } 
   
   input:checked + .slider:before {
     -webkit-transform: translateX(37px);
     -ms-transform: translateX(37px);
     transform: translateX(37px);
-    background: white url('https://i.ibb.co/FxzBYR9/night.png');
+    background: #000000 url('https://i.ibb.co/FxzBYR9/night.png');
     background-repeat: no-repeat;
     background-position: center;
   }
@@ -75,3 +76,4 @@
   .slider.round:before {
     border-radius: 50%;
   }  
+  
