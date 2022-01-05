@@ -7,7 +7,7 @@ class About extends Component {
       <div className="about">
         <h1 className="about-title">About LaayaK</h1>
         <div className="about-content">
-          <p>
+          <p className="about-text">
             One of the major problems faced by college students in this pandemic
             is ineffective communication between the class representative /
             professor regarding online lectures and other miscellaneous agendas.
@@ -17,8 +17,7 @@ class About extends Component {
             hard for the CR to go through the chats on class group and find out
             the majority vote.
           </p>
-          <br />
-          <p>
+          <p className="about-text">
             LaayaK - A solution to efficient circulation of lecture links,
             announcements, polls, etc. with real-time notifications, provides
             all features needed to reduce the load of the class representative

@@ -34,7 +34,7 @@ const Contact = () => {
     ]
     return (
         <div>
-            <h1 className="about-title mt-5">Contact Us: </h1>
+            <h1 className="mt-5">Contact Us: </h1>
             {dev.map((item) => (
                 <div className="dev-container mx-3 my-4" key={item.name}>
                     <div className="social">
