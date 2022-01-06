@@ -27,6 +27,7 @@ const CrLogin = lazy(() => import("./CrComponents/crLogin"));
 const NotFound = lazy(() => import("./NotFound/NotFound"));
 const StuLogin = lazy(() => import("./StuComponents/StuLogin"));
 const Profile = lazy(() => import("./StuComponents/profile/Profile"));
+// const port = process.env.PORT || 8000;
 
 function App() {
   document
@@ -66,4 +67,8 @@ function App() {
   );
 }
 
+
+// App.listen(port, ()=>{
+//   console.log(`listening to the prot no at ${port}`);
+// })
 export default App;
